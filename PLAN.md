@@ -52,9 +52,11 @@ For each English upper-tier local authority (UTLA), refreshed on each data updat
 - **Outbreak-potential**: conditional on a seeded case, the predictive
   distribution of resulting cluster size (a branching-process readout), surfacing
   the "large outbreak" tail rather than a point estimate.
-- **Supporting nowcast**: a de-biased estimate of *current* activity by area,
+- **Supporting nowcast**: a de-biased estimate of *current* activity,
   correcting the reporting-lag right-truncation (a sub-model, not the headline —
-  see architecture).
+  see architecture). **Region-level only:** onset-week × reporting-delay data
+  exists at Region, not UTLA (gating check #1), so the nowcast runs on the 9
+  regions and informs the surface, rather than nowcasting each UTLA directly.
 
 We forecast distributions, simulating the local transmission process many times
 and reading risk quantities off the ensemble.
@@ -77,14 +79,18 @@ modelling work, not an afterthought:
   (machine-readable Swagger API at `api.ukhsa-dashboard.data.gov.uk`, plus bulk
   downloads), measles cases by onset week and age group by UKHSA Region from
   Oct 2023. Fast cadence, ~9 regions — coarse in space, fine in time.
-- **Fine spatial layer — case counts, UTLA × month.** The GOV.UK measles
-  epidemiology reports (updated ~fortnightly), confirmed cases by month, age,
-  region and UTLA. **Known constraint:** counts below 10 per UTLA are *suppressed*
-  for disclosure control — so this layer is itself **interval-censored at the low
-  end**, exactly where most UTLAs sit. Treated as censored data (see honesty
-  rules), not dropped or zero-filled. *Gating check: confirm whether any UTLA/LTLA
-  case granularity is exposed via the API or only via the report tables, and
-  whether report tables are machine-parseable CSV/ODS.*
+- **Fine spatial layer — case counts, UTLA cumulative (refreshed ~fortnightly).**
+  The GOV.UK measles epidemiology reports. **Gating check #1 resolved (see
+  SOURCES.md §2):** UTLA is exposed *only* in these reports (not the API), *only* as
+  **inline HTML tables** (no CSV/ODS), and *only* as a **single cumulative total**
+  per window — there is **no UTLA×month panel**. So this layer carries spatial
+  signal (*where* within England cases concentrate), not temporal; the time course
+  lives at Region×week. A UTLA temporal panel only accrues prospectively by
+  differencing successive fortnightly snapshots (proof-of-commit harvesting).
+  **Suppression is row-omission:** UTLAs with <10 cases are dropped from the table
+  entirely (not shown as `<10`), so the censored set = (full ONS UTLA list) −
+  (listed UTLAs), treated as interval-censored `[0,9]` (see honesty rules), never
+  zero. This is exactly where most UTLAs sit.
 - **Susceptibility layer — MMR coverage, UTLA × year.** COVER programme via the
   dashboard, annual childhood vaccination coverage (MMR1 at 24 months, MMR2 at 5
   years) by UTLA, region and country. **Known caveats, stated in SOURCES.md:**
@@ -160,7 +166,11 @@ occurrence calibration, not intuition.
   most-recent case counts ("where it's already happening"), and (b) raw MMR
   coverage alone ("low coverage = high risk", the intuition the public already
   has). Beating *coverage-alone* — by adage of spatial pooling, age structure, and
-  importation pressure — is the bar. If we can't, we say so.
+  importation pressure — is the bar. If we can't, we say so. **Depth caveat
+  (gating check #1):** at UTLA resolution, finalized history is one cumulative total
+  per year (2024, 2025) plus the live 2026-to-date, so the at-launch backtest is
+  thin; a proper UTLA temporal panel accrues prospectively via proof-of-commit
+  harvesting (and, where available, reconstructed from archived report snapshots).
 - **Coverage-bias sensitivity (`cmd/coverage-sensitivity`).** Because London
   coverage may be underestimated and small LAs are combined, re-run the surface
   under stated alternative coverage assumptions and publish how much the risk map
@@ -230,20 +240,29 @@ PLAN.md
 
 ## Status
 
-Draft / not started. Gating checks before build:
-1. Confirm the finest **machine-readable** case granularity: does the UKHSA API
-   expose sub-region (UTLA/LTLA) measles counts, or is UTLA only in the GOV.UK
-   report tables — and are those tables parseable (CSV/ODS) at acceptable cadence?
-   The whole spatial layer depends on this; resolve it first.
-2. Pull COVER MMR coverage by UTLA and build the age-cohort susceptibility
-   accounting, with the London-underestimate and small-LA-combination caveats
-   encoded as explicit flags.
-3. Implement the censored likelihood for <10 suppression and unit-test it
-   (recover known rates from synthetic suppressed data) before any real inference.
-4. Build the spatial prior on real UTLA adjacency and sanity-check that pooling
+In build. Repo follows the stochadex house style (`pkg/`, `cfg/`, `dat/`, `app/`,
+`nbs/`), matching the AMR sibling, rather than the `cmd/`+`internal/` sketch this
+file originally proposed. Gating checks before build:
+1. ✅ **Resolved (2026-06-25).** Finest machine-readable case granularity is
+   **UKHSA Region** via the API; UTLA is report-only, **HTML tables (no CSV/ODS)**,
+   **cumulative-only (no UTLA×month)**, with **row-omission** suppression. See
+   SOURCES.md §1–§2; data-architecture consequences folded into the Data section.
+2. ✅ **Resolved (2026-06-25).** COVER MMR coverage **is exposed at UTLA via the
+   API** (152 LAs, annual, ~12yr history, 24m+5y strata for MMR1 and MMR2) — clean
+   JSON, no scraping. See SOURCES.md §3. Age-cohort accounting + bias flags still
+   to build on top.
+3. ✅ **Done (2026-06-25).** Censored likelihood for <10 suppression implemented
+   and unit-tested in `pkg/measles/censored_poisson.go`. Synthetic-recovery test:
+   at 91% suppression, censored MLE recovers true rate 6.00→5.996 while naive
+   zero-fill collapses to 0.93 (85% bias). Implements the stochadex
+   `inference.LikelihoodDistribution` interface, SBI-ready.
+4. ⬜ Build the spatial prior on real UTLA adjacency and sanity-check that pooling
    produces a sensible susceptibility surface on a known period (e.g. the 2024
    London/West Midlands concentration) before adding transmission and nowcast.
-5. One end-to-end committed risk map for one report cycle before scaling.
+5. ⬜ One end-to-end committed risk map for one report cycle before scaling.
+
+All five sources confirmed OGL v3.0 (SOURCES.md); ONS geography needs the extra
+OS Crown-copyright-and-database-right attribution line.
 
 ## Attribution (draft)
 
