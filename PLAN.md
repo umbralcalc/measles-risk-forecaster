@@ -256,9 +256,14 @@ file originally proposed. Gating checks before build:
    at 91% suppression, censored MLE recovers true rate 6.00→5.996 while naive
    zero-fill collapses to 0.93 (85% bias). Implements the stochadex
    `inference.LikelihoodDistribution` interface, SBI-ready.
-4. ⬜ Build the spatial prior on real UTLA adjacency and sanity-check that pooling
-   produces a sensible susceptibility surface on a known period (e.g. the 2024
-   London/West Midlands concentration) before adding transmission and nowcast.
+4. ✅ **Done (2026-06-25).** Spatial prior built on **real** ONS UTLA adjacency
+   (CUA Dec 2024, 153 England areas, 360 edges; `dat/fetch_geography.sh` +
+   `dat/build_adjacency.py`). Intrinsic CAR smoother in
+   `pkg/measles/spatial_car.go`, tested: 64% RMSE reduction recovering a smooth
+   surface from noisy obs; fully-suppressed (no-obs) UTLAs imputed from neighbours
+   (exact ICAR invariant) and beating zero-fill — the #3↔#4 link. Remaining for a
+   full check: rerun on the *real* 2024 London/West Midlands data once cases +
+   coverage are ingested and joined (overlaps with #5).
 5. ⬜ One end-to-end committed risk map for one report cycle before scaling.
 
 All five sources confirmed OGL v3.0 (SOURCES.md); ONS geography needs the extra

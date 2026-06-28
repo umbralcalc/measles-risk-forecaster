@@ -1,0 +1,10 @@
+# Large raw data pulls — regenerable from the fetch scripts in dat/.
+dat/utla_boundaries.geojson
+data/raw/
+
+# The small derived adjacency artifacts (dat/utla_nodes.csv,
+# dat/utla_adjacency.csv) ARE committed: the Go spatial tests depend on them.
+
+# Go
+*.test
+*.out

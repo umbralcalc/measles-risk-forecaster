@@ -93,7 +93,26 @@ and disclosure-controlled, so no personal data sits under the exception.
 
 ## 4. UTLA boundaries + adjacency (spatial prior)
 
-- **Source:** ONS Open Geography Portal (`geoportal.statistics.gov.uk`).
+- **Source:** ONS Open Geography Portal (`geoportal.statistics.gov.uk`),
+  ArcGIS FeatureServer org `ESMARspQHYMw9BZ9`. **Gating check #4 resolved.**
+- **Layer chosen:** `Counties_and_Unitary_Authorities_December_2024_Boundaries_UK_BGC`,
+  filtered to England (`CTYUA24CD LIKE 'E%'`) → **153 areas**. Fields used:
+  `CTYUA24CD`, `CTYUA24NM`. Fetched via `dat/fetch_geography.sh` (BGC = generalised
+  clipped; topologically consistent, so neighbours share exact boundary vertices).
+  - The older `Upper_Tier_Local_Authorities_December_2022` layer was **rejected**:
+    it groups metropolitan districts into metropolitan counties (122 England areas)
+    — wrong granularity — and predates the 2023 unitary reorganisations.
+- **Reconciliation to COVER (153 vs 152):** the boundary set has 153 England UTLAs;
+  COVER reports 152. The difference is the documented small-LA combination (e.g.
+  City of London, Isles of Scilly). Joined by name at ingest; mismatches flagged,
+  not dropped. (Same small-LA-combination caveat noted for source #3.)
+- **Adjacency:** built by `dat/build_adjacency.py` (pure Python, no geometry lib —
+  exact shared-segment detection on the topological boundaries). Result:
+  **153 nodes, 360 edges, mean degree 4.77**; Isle of Wight and Isles of Scilly are
+  isolated (no land border — handled by the CAR prior, which requires each
+  connected component to carry at least one anchoring observation). Committed
+  derived artifacts: `dat/utla_nodes.csv`, `dat/utla_adjacency.csv` (the Go spatial
+  tests depend on them); the 7.4 MB source GeoJSON is gitignored (regenerable).
 - **Licence:** OGL v3.0, with a **two-part** mandatory attribution:
   - *"Source: Office for National Statistics licensed under the Open Government
     Licence v3.0"*
