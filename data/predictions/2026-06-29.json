@@ -16,6 +16,20 @@
     "seed": 1
   },
   "attribution": "Contains public sector information from UKHSA (measles epidemiology and COVER vaccination coverage) and the Office for National Statistics (geographies and population), licensed under the Open Government Licence v3.0. Contains OS data © Crown copyright and database right 2024. Not an official source of measles risk assessment.",
+  "susceptibility_case_link": {
+    "report_year": 2026,
+    "alpha": 1.82,
+    "beta": 0.8,
+    "beta_std": 0.036,
+    "beta_ci95": [
+      0.73,
+      0.87
+    ],
+    "beta_predicts_cases": true,
+    "log_marginal_lik": -370.9,
+    "effective_sample_size": 12787.2,
+    "num_particles": 20000
+  },
   "utlas": [
     {
       "code": "E09000012",
@@ -27,7 +41,7 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.562
+      "prob_large_outbreak": 0.557
     },
     {
       "code": "E09000014",
@@ -39,7 +53,7 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.539
+      "prob_large_outbreak": 0.543
     },
     {
       "code": "E09000020",
@@ -51,7 +65,7 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.534
+      "prob_large_outbreak": 0.531
     },
     {
       "code": "E09000013",
@@ -63,31 +77,7 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.534
-    },
-    {
-      "code": "E09000025",
-      "name": "Newham",
-      "susceptibility": 0.214,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 3.21,
-      "cluster_p50": 5000,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.519
-    },
-    {
-      "code": "E09000033",
-      "name": "Westminster",
-      "susceptibility": 0.209,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 3.13,
-      "cluster_p50": 5000,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.516
+      "prob_large_outbreak": 0.53
     },
     {
       "code": "E09000010",
@@ -99,19 +89,7 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.515
-    },
-    {
-      "code": "E09000019",
-      "name": "Islington",
-      "susceptibility": 0.217,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 3.26,
-      "cluster_p50": 5000,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.515
+      "prob_large_outbreak": 0.53
     },
     {
       "code": "E09000007",
@@ -123,7 +101,31 @@
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.513
+      "prob_large_outbreak": 0.52
+    },
+    {
+      "code": "E09000019",
+      "name": "Islington",
+      "susceptibility": 0.217,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 3.26,
+      "cluster_p50": 5000,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.518
+    },
+    {
+      "code": "E09000033",
+      "name": "Westminster",
+      "susceptibility": 0.209,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 3.13,
+      "cluster_p50": 5000,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.508
     },
     {
       "code": "E09000002",
@@ -132,6 +134,30 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 3.02,
+      "cluster_p50": 5000,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.506
+    },
+    {
+      "code": "E09000025",
+      "name": "Newham",
+      "susceptibility": 0.214,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 3.21,
+      "cluster_p50": 5000,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.503
+    },
+    {
+      "code": "E09000005",
+      "name": "Brent",
+      "susceptibility": 0.199,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.98,
       "cluster_p50": 5000,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
@@ -144,34 +170,10 @@
       "susceptibility_imputed": true,
       "prob_r_local_gt_1": 1,
       "median_r_local": 3.13,
-      "cluster_p50": 15,
+      "cluster_p50": 12,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.5
-    },
-    {
-      "code": "E09000005",
-      "name": "Brent",
-      "susceptibility": 0.199,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.98,
-      "cluster_p50": 10,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.497
-    },
-    {
-      "code": "E09000003",
-      "name": "Barnet",
-      "susceptibility": 0.193,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.89,
-      "cluster_p50": 8,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.495
+      "prob_large_outbreak": 0.499
     },
     {
       "code": "E09000026",
@@ -180,10 +182,34 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 2.89,
-      "cluster_p50": 8,
+      "cluster_p50": 5,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.493
+      "prob_large_outbreak": 0.479
+    },
+    {
+      "code": "E09000003",
+      "name": "Barnet",
+      "susceptibility": 0.193,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.89,
+      "cluster_p50": 5,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.478
+    },
+    {
+      "code": "E09000008",
+      "name": "Croydon",
+      "susceptibility": 0.185,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.77,
+      "cluster_p50": 6,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.478
     },
     {
       "code": "E09000031",
@@ -195,19 +221,7 @@
       "cluster_p50": 5,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.482
-    },
-    {
-      "code": "E09000022",
-      "name": "Lambeth",
-      "susceptibility": 0.184,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.75,
-      "cluster_p50": 5,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.476
+      "prob_large_outbreak": 0.477
     },
     {
       "code": "E09000015",
@@ -219,7 +233,19 @@
       "cluster_p50": 5,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.475
+      "prob_large_outbreak": 0.473
+    },
+    {
+      "code": "E09000022",
+      "name": "Lambeth",
+      "susceptibility": 0.184,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.75,
+      "cluster_p50": 4,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.471
     },
     {
       "code": "E09000030",
@@ -231,55 +257,7 @@
       "cluster_p50": 4,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.475
-    },
-    {
-      "code": "E09000008",
-      "name": "Croydon",
-      "susceptibility": 0.185,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.77,
-      "cluster_p50": 4,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.467
-    },
-    {
-      "code": "E09000011",
-      "name": "Greenwich",
-      "susceptibility": 0.176,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.64,
-      "cluster_p50": 4,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.467
-    },
-    {
-      "code": "E09000009",
-      "name": "Ealing",
-      "susceptibility": 0.175,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.63,
-      "cluster_p50": 4,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.466
-    },
-    {
-      "code": "E09000028",
-      "name": "Southwark",
-      "susceptibility": 0.173,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.6,
-      "cluster_p50": 4,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.462
+      "prob_large_outbreak": 0.463
     },
     {
       "code": "E09000032",
@@ -288,22 +266,22 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 2.63,
-      "cluster_p50": 3,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.453
-    },
-    {
-      "code": "E09000023",
-      "name": "Lewisham",
-      "susceptibility": 0.17,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.54,
       "cluster_p50": 4,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.451
+      "prob_large_outbreak": 0.462
+    },
+    {
+      "code": "E09000028",
+      "name": "Southwark",
+      "susceptibility": 0.173,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.6,
+      "cluster_p50": 3,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.448
     },
     {
       "code": "E09000024",
@@ -312,22 +290,46 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 2.57,
-      "cluster_p50": 4,
+      "cluster_p50": 3,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.447
+    },
+    {
+      "code": "E09000009",
+      "name": "Ealing",
+      "susceptibility": 0.175,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.63,
+      "cluster_p50": 3,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.446
+    },
+    {
+      "code": "E09000011",
+      "name": "Greenwich",
+      "susceptibility": 0.176,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.64,
+      "cluster_p50": 3,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.445
     },
     {
-      "code": "E06000018",
-      "name": "Nottingham",
-      "susceptibility": 0.164,
+      "code": "E09000023",
+      "name": "Lewisham",
+      "susceptibility": 0.17,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 2.46,
+      "median_r_local": 2.54,
       "cluster_p50": 3,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.437
+      "prob_large_outbreak": 0.443
     },
     {
       "code": "E09000018",
@@ -339,7 +341,31 @@
       "cluster_p50": 3,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.419
+      "prob_large_outbreak": 0.433
+    },
+    {
+      "code": "E06000018",
+      "name": "Nottingham",
+      "susceptibility": 0.164,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.46,
+      "cluster_p50": 3,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.418
+    },
+    {
+      "code": "E08000025",
+      "name": "Birmingham",
+      "susceptibility": 0.145,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 2.17,
+      "cluster_p50": 3,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.402
     },
     {
       "code": "E08000012",
@@ -348,22 +374,10 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 2.32,
-      "cluster_p50": 3,
+      "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.417
-    },
-    {
-      "code": "E09000027",
-      "name": "Richmond upon Thames",
-      "susceptibility": 0.15,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.26,
-      "cluster_p50": 3,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.416
+      "prob_large_outbreak": 0.397
     },
     {
       "code": "E06000032",
@@ -375,43 +389,19 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.408
+      "prob_large_outbreak": 0.393
     },
     {
-      "code": "E08000003",
-      "name": "Manchester",
-      "susceptibility": 0.143,
+      "code": "E09000027",
+      "name": "Richmond upon Thames",
+      "susceptibility": 0.15,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 2.14,
+      "median_r_local": 2.26,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.397
-    },
-    {
-      "code": "E08000025",
-      "name": "Birmingham",
-      "susceptibility": 0.145,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.17,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.382
-    },
-    {
-      "code": "E09000016",
-      "name": "Havering",
-      "susceptibility": 0.143,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 2.15,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.381
+      "prob_large_outbreak": 0.393
     },
     {
       "code": "E08000011",
@@ -423,31 +413,31 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.371
+      "prob_large_outbreak": 0.388
     },
     {
-      "code": "E09000017",
-      "name": "Hillingdon",
-      "susceptibility": 0.134,
+      "code": "E09000016",
+      "name": "Havering",
+      "susceptibility": 0.143,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 2.01,
+      "median_r_local": 2.15,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.369
+      "prob_large_outbreak": 0.385
     },
     {
-      "code": "E09000021",
-      "name": "Kingston upon Thames",
-      "susceptibility": 0.138,
+      "code": "E08000003",
+      "name": "Manchester",
+      "susceptibility": 0.143,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 2.08,
+      "median_r_local": 2.14,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.367
+      "prob_large_outbreak": 0.384
     },
     {
       "code": "E06000031",
@@ -459,19 +449,19 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.365
+      "prob_large_outbreak": 0.371
     },
     {
-      "code": "E09000006",
-      "name": "Bromley",
-      "susceptibility": 0.136,
+      "code": "E09000021",
+      "name": "Kingston upon Thames",
+      "susceptibility": 0.138,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 2.04,
+      "median_r_local": 2.08,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.364
+      "prob_large_outbreak": 0.368
     },
     {
       "code": "E09000004",
@@ -483,31 +473,31 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.362
+      "prob_large_outbreak": 0.36
     },
     {
-      "code": "E08000035",
-      "name": "Leeds",
-      "susceptibility": 0.129,
+      "code": "E09000006",
+      "name": "Bromley",
+      "susceptibility": 0.136,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.93,
+      "median_r_local": 2.04,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.353
+      "prob_large_outbreak": 0.357
     },
     {
-      "code": "E06000015",
-      "name": "Derby",
-      "susceptibility": 0.126,
+      "code": "E09000017",
+      "name": "Hillingdon",
+      "susceptibility": 0.134,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.89,
+      "median_r_local": 2.01,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.345
+      "prob_large_outbreak": 0.355
     },
     {
       "code": "E08000026",
@@ -519,19 +509,19 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.344
+      "prob_large_outbreak": 0.349
     },
     {
-      "code": "E09000029",
-      "name": "Sutton",
-      "susceptibility": 0.127,
+      "code": "E08000035",
+      "name": "Leeds",
+      "susceptibility": 0.129,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.91,
+      "median_r_local": 1.93,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.342
+      "prob_large_outbreak": 0.341
     },
     {
       "code": "E08000031",
@@ -546,28 +536,16 @@
       "prob_large_outbreak": 0.336
     },
     {
-      "code": "E06000010",
-      "name": "Kingston upon Hull, City of",
-      "susceptibility": 0.126,
+      "code": "E09000029",
+      "name": "Sutton",
+      "susceptibility": 0.127,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.89,
+      "median_r_local": 1.91,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.335
-    },
-    {
-      "code": "E06000035",
-      "name": "Medway",
-      "susceptibility": 0.122,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.83,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.321
     },
     {
       "code": "E08000028",
@@ -579,7 +557,43 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.32
+      "prob_large_outbreak": 0.333
+    },
+    {
+      "code": "E06000010",
+      "name": "Kingston upon Hull, City of",
+      "susceptibility": 0.126,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.89,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.328
+    },
+    {
+      "code": "E06000035",
+      "name": "Medway",
+      "susceptibility": 0.122,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.83,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.327
+    },
+    {
+      "code": "E06000015",
+      "name": "Derby",
+      "susceptibility": 0.126,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.89,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.322
     },
     {
       "code": "E06000013",
@@ -591,19 +605,7 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.32
-    },
-    {
-      "code": "E06000039",
-      "name": "Slough",
-      "susceptibility": 0.115,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.72,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.306
+      "prob_large_outbreak": 0.316
     },
     {
       "code": "E06000043",
@@ -612,6 +614,18 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 1.77,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.307
+    },
+    {
+      "code": "E08000032",
+      "name": "Bradford",
+      "susceptibility": 0.116,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.74,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
@@ -627,31 +641,43 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.301
+      "prob_large_outbreak": 0.295
     },
     {
-      "code": "E06000062",
-      "name": "West Northamptonshire",
+      "code": "E06000039",
+      "name": "Slough",
+      "susceptibility": 0.115,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.72,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.29
+    },
+    {
+      "code": "E06000016",
+      "name": "Leicester",
+      "susceptibility": 0.114,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.72,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.286
+    },
+    {
+      "code": "E06000002",
+      "name": "Middlesbrough",
       "susceptibility": 0.113,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.69,
+      "median_r_local": 1.7,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.293
-    },
-    {
-      "code": "E08000032",
-      "name": "Bradford",
-      "susceptibility": 0.116,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.74,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.288
+      "prob_large_outbreak": 0.285
     },
     {
       "code": "E06000034",
@@ -663,7 +689,19 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.281
+      "prob_large_outbreak": 0.285
+    },
+    {
+      "code": "E06000062",
+      "name": "West Northamptonshire",
+      "susceptibility": 0.113,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.69,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.28
     },
     {
       "code": "E10000015",
@@ -678,18 +716,6 @@
       "prob_large_outbreak": 0.279
     },
     {
-      "code": "E06000016",
-      "name": "Leicester",
-      "susceptibility": 0.114,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.72,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.278
-    },
-    {
       "code": "E08000030",
       "name": "Walsall",
       "susceptibility": 0.113,
@@ -699,43 +725,7 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.277
-    },
-    {
-      "code": "E10000016",
-      "name": "Kent",
-      "susceptibility": 0.11,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.65,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.273
-    },
-    {
-      "code": "E06000002",
-      "name": "Middlesbrough",
-      "susceptibility": 0.113,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.7,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.27
-    },
-    {
-      "code": "E10000030",
-      "name": "Surrey",
-      "susceptibility": 0.108,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.62,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.267
+      "prob_large_outbreak": 0.276
     },
     {
       "code": "E10000011",
@@ -747,47 +737,83 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.266
+      "prob_large_outbreak": 0.276
     },
     {
-      "code": "E08000004",
-      "name": "Oldham",
-      "susceptibility": 0.103,
+      "code": "E10000016",
+      "name": "Kent",
+      "susceptibility": 0.11,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.55,
+      "median_r_local": 1.65,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.247
+      "prob_large_outbreak": 0.268
     },
     {
-      "code": "E06000023",
-      "name": "Bristol, City of",
+      "code": "E06000055",
+      "name": "Bedford",
+      "susceptibility": 0.102,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.53,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.255
+    },
+    {
+      "code": "E10000030",
+      "name": "Surrey",
+      "susceptibility": 0.108,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.62,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.254
+    },
+    {
+      "code": "E08000017",
+      "name": "Doncaster",
       "susceptibility": 0.105,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 1.57,
-      "cluster_p50": 2,
+      "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.246
+      "prob_large_outbreak": 0.252
     },
     {
-      "code": "E06000038",
-      "name": "Reading",
-      "susceptibility": 0.105,
+      "code": "E10000012",
+      "name": "Essex",
+      "susceptibility": 0.104,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 1.57,
-      "cluster_p50": 2,
+      "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.246
+      "prob_large_outbreak": 0.251
     },
     {
       "code": "E08000029",
       "name": "Solihull",
+      "susceptibility": 0.104,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.57,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.248
+    },
+    {
+      "code": "E08000021",
+      "name": "Newcastle upon Tyne",
       "susceptibility": 0.104,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
@@ -804,26 +830,14 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 1.54,
-      "cluster_p50": 2,
+      "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.246
+      "prob_large_outbreak": 0.239
     },
     {
-      "code": "E08000021",
-      "name": "Newcastle upon Tyne",
-      "susceptibility": 0.104,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.57,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.245
-    },
-    {
-      "code": "E08000017",
-      "name": "Doncaster",
+      "code": "E06000038",
+      "name": "Reading",
       "susceptibility": 0.105,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
@@ -831,7 +845,43 @@
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.244
+      "prob_large_outbreak": 0.237
+    },
+    {
+      "code": "E06000023",
+      "name": "Bristol, City of",
+      "susceptibility": 0.105,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.57,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.237
+    },
+    {
+      "code": "E06000008",
+      "name": "Blackburn with Darwen",
+      "susceptibility": 0.097,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.46,
+      "cluster_p50": 2,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.231
+    },
+    {
+      "code": "E08000004",
+      "name": "Oldham",
+      "susceptibility": 0.103,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.55,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.227
     },
     {
       "code": "E06000061",
@@ -840,70 +890,10 @@
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
       "median_r_local": 1.55,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.243
-    },
-    {
-      "code": "E10000012",
-      "name": "Essex",
-      "susceptibility": 0.104,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.57,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.24
-    },
-    {
-      "code": "E06000055",
-      "name": "Bedford",
-      "susceptibility": 0.102,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.53,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.24
-    },
-    {
-      "code": "E06000033",
-      "name": "Southend-on-Sea",
-      "susceptibility": 0.103,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.54,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.237
-    },
-    {
-      "code": "E06000021",
-      "name": "Stoke-on-Trent",
-      "susceptibility": 0.098,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.46,
-      "cluster_p50": 2,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.227
-    },
-    {
-      "code": "E08000014",
-      "name": "Sefton",
-      "susceptibility": 0.098,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.48,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.224
+      "prob_large_outbreak": 0.226
     },
     {
       "code": "E08000008",
@@ -915,175 +905,31 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.221
+      "prob_large_outbreak": 0.225
     },
     {
-      "code": "E06000042",
-      "name": "Milton Keynes",
-      "susceptibility": 0.099,
+      "code": "E06000033",
+      "name": "Southend-on-Sea",
+      "susceptibility": 0.103,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.49,
+      "median_r_local": 1.54,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.219
+      "prob_large_outbreak": 0.224
     },
     {
-      "code": "E06000053",
-      "name": "Isles of Scilly",
+      "code": "E08000014",
+      "name": "Sefton",
       "susceptibility": 0.098,
-      "susceptibility_imputed": true,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.47,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.213
-    },
-    {
-      "code": "E06000008",
-      "name": "Blackburn with Darwen",
-      "susceptibility": 0.097,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.46,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.21
-    },
-    {
-      "code": "E06000045",
-      "name": "Southampton",
-      "susceptibility": 0.095,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.43,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.21
-    },
-    {
-      "code": "E08000027",
-      "name": "Dudley",
-      "susceptibility": 0.094,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.41,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.208
-    },
-    {
-      "code": "E06000052",
-      "name": "Cornwall",
-      "susceptibility": 0.097,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.45,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.205
-    },
-    {
-      "code": "E06000030",
-      "name": "Swindon",
-      "susceptibility": 0.094,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.41,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.205
-    },
-    {
-      "code": "E06000001",
-      "name": "Hartlepool",
-      "susceptibility": 0.095,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.42,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.204
-    },
-    {
-      "code": "E08000019",
-      "name": "Sheffield",
-      "susceptibility": 0.094,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.41,
+      "median_r_local": 1.48,
       "cluster_p50": 2,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.203
-    },
-    {
-      "code": "E08000033",
-      "name": "Calderdale",
-      "susceptibility": 0.096,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.44,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.202
-    },
-    {
-      "code": "E08000002",
-      "name": "Bury",
-      "susceptibility": 0.097,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.45,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.201
-    },
-    {
-      "code": "E08000034",
-      "name": "Kirklees",
-      "susceptibility": 0.094,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.42,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.198
-    },
-    {
-      "code": "E08000005",
-      "name": "Rochdale",
-      "susceptibility": 0.094,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.41,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.198
-    },
-    {
-      "code": "E10000024",
-      "name": "Nottinghamshire",
-      "susceptibility": 0.096,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.44,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.197
+      "prob_large_outbreak": 0.218
     },
     {
       "code": "E06000017",
@@ -1095,19 +941,55 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.197
+      "prob_large_outbreak": 0.21
     },
     {
-      "code": "E10000032",
-      "name": "West Sussex",
-      "susceptibility": 0.094,
+      "code": "E06000042",
+      "name": "Milton Keynes",
+      "susceptibility": 0.099,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.42,
+      "median_r_local": 1.49,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.197
+      "prob_large_outbreak": 0.209
+    },
+    {
+      "code": "E10000024",
+      "name": "Nottinghamshire",
+      "susceptibility": 0.096,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.44,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.209
+    },
+    {
+      "code": "E06000021",
+      "name": "Stoke-on-Trent",
+      "susceptibility": 0.098,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.46,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.207
+    },
+    {
+      "code": "E08000033",
+      "name": "Calderdale",
+      "susceptibility": 0.096,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.44,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.206
     },
     {
       "code": "E06000056",
@@ -1119,7 +1001,91 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.196
+      "prob_large_outbreak": 0.205
+    },
+    {
+      "code": "E06000052",
+      "name": "Cornwall",
+      "susceptibility": 0.097,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.45,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.204
+    },
+    {
+      "code": "E06000053",
+      "name": "Isles of Scilly",
+      "susceptibility": 0.098,
+      "susceptibility_imputed": true,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.47,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.203
+    },
+    {
+      "code": "E06000001",
+      "name": "Hartlepool",
+      "susceptibility": 0.095,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.42,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.203
+    },
+    {
+      "code": "E06000045",
+      "name": "Southampton",
+      "susceptibility": 0.095,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.43,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.201
+    },
+    {
+      "code": "E08000005",
+      "name": "Rochdale",
+      "susceptibility": 0.094,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.41,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.201
+    },
+    {
+      "code": "E08000027",
+      "name": "Dudley",
+      "susceptibility": 0.094,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.41,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.2
+    },
+    {
+      "code": "E08000002",
+      "name": "Bury",
+      "susceptibility": 0.097,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.45,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.199
     },
     {
       "code": "E08000001",
@@ -1131,19 +1097,31 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.194
+      "prob_large_outbreak": 0.198
     },
     {
-      "code": "E06000046",
-      "name": "Isle of Wight",
-      "susceptibility": 0.092,
+      "code": "E06000030",
+      "name": "Swindon",
+      "susceptibility": 0.094,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.39,
+      "median_r_local": 1.41,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.194
+      "prob_large_outbreak": 0.196
+    },
+    {
+      "code": "E10000032",
+      "name": "West Sussex",
+      "susceptibility": 0.094,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.42,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.196
     },
     {
       "code": "E06000006",
@@ -1155,7 +1133,31 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.193
+      "prob_large_outbreak": 0.195
+    },
+    {
+      "code": "E08000019",
+      "name": "Sheffield",
+      "susceptibility": 0.094,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.41,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.194
+    },
+    {
+      "code": "E06000058",
+      "name": "Bournemouth, Christchurch and Poole",
+      "susceptibility": 0.094,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.41,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.191
     },
     {
       "code": "E10000017",
@@ -1170,28 +1172,28 @@
       "prob_large_outbreak": 0.19
     },
     {
-      "code": "E06000058",
-      "name": "Bournemouth, Christchurch and Poole",
+      "code": "E08000034",
+      "name": "Kirklees",
       "susceptibility": 0.094,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.41,
+      "median_r_local": 1.42,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.186
     },
     {
-      "code": "E10000031",
-      "name": "Warwickshire",
-      "susceptibility": 0.09,
+      "code": "E06000046",
+      "name": "Isle of Wight",
+      "susceptibility": 0.092,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.35,
+      "median_r_local": 1.39,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.179
+      "prob_large_outbreak": 0.18
     },
     {
       "code": "E08000013",
@@ -1206,16 +1208,16 @@
       "prob_large_outbreak": 0.176
     },
     {
-      "code": "E06000060",
-      "name": "Buckinghamshire",
-      "susceptibility": 0.089,
+      "code": "E10000031",
+      "name": "Warwickshire",
+      "susceptibility": 0.09,
       "susceptibility_imputed": false,
       "prob_r_local_gt_1": 1,
-      "median_r_local": 1.33,
+      "median_r_local": 1.35,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.167
+      "prob_large_outbreak": 0.176
     },
     {
       "code": "E08000036",
@@ -1227,7 +1229,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.163
+      "prob_large_outbreak": 0.17
     },
     {
       "code": "E06000044",
@@ -1239,31 +1241,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.163
-    },
-    {
-      "code": "E10000028",
-      "name": "Staffordshire",
-      "susceptibility": 0.087,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.3,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.159
-    },
-    {
-      "code": "E08000010",
-      "name": "Wigan",
-      "susceptibility": 0.086,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 1,
-      "median_r_local": 1.29,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.159
+      "prob_large_outbreak": 0.17
     },
     {
       "code": "E06000020",
@@ -1275,7 +1253,31 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.152
+      "prob_large_outbreak": 0.168
+    },
+    {
+      "code": "E06000060",
+      "name": "Buckinghamshire",
+      "susceptibility": 0.089,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.33,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.164
+    },
+    {
+      "code": "E08000010",
+      "name": "Wigan",
+      "susceptibility": 0.086,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.29,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.151
     },
     {
       "code": "E06000065",
@@ -1287,7 +1289,19 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.149
+      "prob_large_outbreak": 0.151
+    },
+    {
+      "code": "E10000028",
+      "name": "Staffordshire",
+      "susceptibility": 0.087,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 1,
+      "median_r_local": 1.3,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.15
     },
     {
       "code": "E06000005",
@@ -1299,7 +1313,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.147
+      "prob_large_outbreak": 0.146
     },
     {
       "code": "E06000014",
@@ -1311,7 +1325,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.136
+      "prob_large_outbreak": 0.145
     },
     {
       "code": "E10000003",
@@ -1323,7 +1337,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.134
+      "prob_large_outbreak": 0.132
     },
     {
       "code": "E08000015",
@@ -1347,7 +1361,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.118
+      "prob_large_outbreak": 0.12
     },
     {
       "code": "E10000034",
@@ -1359,31 +1373,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.113
-    },
-    {
-      "code": "E06000066",
-      "name": "Somerset",
-      "susceptibility": 0.081,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.938,
-      "median_r_local": 1.21,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.113
-    },
-    {
-      "code": "E06000049",
-      "name": "Cheshire East",
-      "susceptibility": 0.081,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.943,
-      "median_r_local": 1.22,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.113
+      "prob_large_outbreak": 0.116
     },
     {
       "code": "E06000007",
@@ -1395,31 +1385,7 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.109
-    },
-    {
-      "code": "E10000018",
-      "name": "Leicestershire",
-      "susceptibility": 0.079,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.887,
-      "median_r_local": 1.18,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.109
-    },
-    {
-      "code": "E08000009",
-      "name": "Trafford",
-      "susceptibility": 0.081,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.934,
-      "median_r_local": 1.21,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.107
+      "prob_large_outbreak": 0.116
     },
     {
       "code": "E10000025",
@@ -1431,15 +1397,75 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.106
+      "prob_large_outbreak": 0.114
     },
     {
-      "code": "E06000004",
-      "name": "Stockton-on-Tees",
+      "code": "E06000066",
+      "name": "Somerset",
+      "susceptibility": 0.081,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.938,
+      "median_r_local": 1.21,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.111
+    },
+    {
+      "code": "E08000009",
+      "name": "Trafford",
+      "susceptibility": 0.081,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.934,
+      "median_r_local": 1.21,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.109
+    },
+    {
+      "code": "E06000049",
+      "name": "Cheshire East",
+      "susceptibility": 0.081,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.943,
+      "median_r_local": 1.22,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.108
+    },
+    {
+      "code": "E10000013",
+      "name": "Gloucestershire",
+      "susceptibility": 0.08,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.917,
+      "median_r_local": 1.2,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.108
+    },
+    {
+      "code": "E06000050",
+      "name": "Cheshire West and Chester",
       "susceptibility": 0.079,
       "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.894,
-      "median_r_local": 1.19,
+      "prob_r_local_gt_1": 0.877,
+      "median_r_local": 1.18,
+      "cluster_p50": 1,
+      "cluster_p90": 5000,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.108
+    },
+    {
+      "code": "E10000018",
+      "name": "Leicestershire",
+      "susceptibility": 0.079,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.887,
+      "median_r_local": 1.18,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
@@ -1455,43 +1481,31 @@
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.105
-    },
-    {
-      "code": "E10000013",
-      "name": "Gloucestershire",
-      "susceptibility": 0.08,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.917,
-      "median_r_local": 1.2,
-      "cluster_p50": 1,
-      "cluster_p90": 5000,
-      "cluster_p99": 5000,
       "prob_large_outbreak": 0.104
     },
     {
-      "code": "E08000018",
-      "name": "Rotherham",
-      "susceptibility": 0.078,
+      "code": "E06000004",
+      "name": "Stockton-on-Tees",
+      "susceptibility": 0.079,
       "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.861,
-      "median_r_local": 1.17,
+      "prob_r_local_gt_1": 0.894,
+      "median_r_local": 1.19,
       "cluster_p50": 1,
       "cluster_p90": 5000,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.102
     },
     {
-      "code": "E06000050",
-      "name": "Cheshire West and Chester",
-      "susceptibility": 0.079,
+      "code": "E08000007",
+      "name": "Stockport",
+      "susceptibility": 0.078,
       "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.877,
+      "prob_r_local_gt_1": 0.873,
       "median_r_local": 1.18,
       "cluster_p50": 1,
-      "cluster_p90": 3662,
+      "cluster_p90": 5000,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.1
+      "prob_large_outbreak": 0.102
     },
     {
       "code": "E06000040",
@@ -1501,19 +1515,19 @@
       "prob_r_local_gt_1": 0.864,
       "median_r_local": 1.17,
       "cluster_p50": 1,
-      "cluster_p90": 357,
+      "cluster_p90": 1390,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.096
+      "prob_large_outbreak": 0.099
     },
     {
-      "code": "E10000029",
-      "name": "Suffolk",
+      "code": "E06000012",
+      "name": "North East Lincolnshire",
       "susceptibility": 0.076,
       "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.821,
+      "prob_r_local_gt_1": 0.82,
       "median_r_local": 1.15,
       "cluster_p50": 1,
-      "cluster_p90": 237,
+      "cluster_p90": 262,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.093
     },
@@ -1525,45 +1539,21 @@
       "prob_r_local_gt_1": 0.828,
       "median_r_local": 1.15,
       "cluster_p50": 1,
-      "cluster_p90": 222,
+      "cluster_p90": 179,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.092
     },
     {
-      "code": "E08000007",
-      "name": "Stockport",
+      "code": "E08000018",
+      "name": "Rotherham",
       "susceptibility": 0.078,
       "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.873,
-      "median_r_local": 1.18,
+      "prob_r_local_gt_1": 0.861,
+      "median_r_local": 1.17,
       "cluster_p50": 1,
-      "cluster_p90": 125,
+      "cluster_p90": 242,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.09
-    },
-    {
-      "code": "E06000012",
-      "name": "North East Lincolnshire",
-      "susceptibility": 0.076,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.82,
-      "median_r_local": 1.15,
-      "cluster_p50": 1,
-      "cluster_p90": 177,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.089
-    },
-    {
-      "code": "E06000041",
-      "name": "Wokingham",
-      "susceptibility": 0.077,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.841,
-      "median_r_local": 1.16,
-      "cluster_p50": 1,
-      "cluster_p90": 110,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.085
+      "prob_large_outbreak": 0.091
     },
     {
       "code": "E06000003",
@@ -1573,21 +1563,9 @@
       "prob_r_local_gt_1": 0.835,
       "median_r_local": 1.15,
       "cluster_p50": 1,
-      "cluster_p90": 118,
+      "cluster_p90": 169,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.083
-    },
-    {
-      "code": "E06000027",
-      "name": "Torbay",
-      "susceptibility": 0.076,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.807,
-      "median_r_local": 1.14,
-      "cluster_p50": 1,
-      "cluster_p90": 96,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.083
+      "prob_large_outbreak": 0.089
     },
     {
       "code": "E06000036",
@@ -1597,9 +1575,45 @@
       "prob_r_local_gt_1": 0.822,
       "median_r_local": 1.15,
       "cluster_p50": 1,
-      "cluster_p90": 93,
+      "cluster_p90": 154,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.082
+      "prob_large_outbreak": 0.088
+    },
+    {
+      "code": "E06000041",
+      "name": "Wokingham",
+      "susceptibility": 0.077,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.841,
+      "median_r_local": 1.16,
+      "cluster_p50": 1,
+      "cluster_p90": 89,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.086
+    },
+    {
+      "code": "E10000029",
+      "name": "Suffolk",
+      "susceptibility": 0.076,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.821,
+      "median_r_local": 1.15,
+      "cluster_p50": 1,
+      "cluster_p90": 114,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.085
+    },
+    {
+      "code": "E06000027",
+      "name": "Torbay",
+      "susceptibility": 0.076,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.807,
+      "median_r_local": 1.14,
+      "cluster_p50": 1,
+      "cluster_p90": 99,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.084
     },
     {
       "code": "E10000008",
@@ -1609,31 +1623,7 @@
       "prob_r_local_gt_1": 0.785,
       "median_r_local": 1.13,
       "cluster_p50": 1,
-      "cluster_p90": 77,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.076
-    },
-    {
-      "code": "E06000025",
-      "name": "South Gloucestershire",
-      "susceptibility": 0.075,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.769,
-      "median_r_local": 1.12,
-      "cluster_p50": 1,
-      "cluster_p90": 77,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.075
-    },
-    {
-      "code": "E06000022",
-      "name": "Bath and North East Somerset",
-      "susceptibility": 0.074,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.742,
-      "median_r_local": 1.11,
-      "cluster_p50": 1,
-      "cluster_p90": 60,
+      "cluster_p90": 69,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.074
     },
@@ -1645,7 +1635,31 @@
       "prob_r_local_gt_1": 0.747,
       "median_r_local": 1.11,
       "cluster_p50": 1,
-      "cluster_p90": 67,
+      "cluster_p90": 77,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.073
+    },
+    {
+      "code": "E06000025",
+      "name": "South Gloucestershire",
+      "susceptibility": 0.075,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.769,
+      "median_r_local": 1.12,
+      "cluster_p50": 1,
+      "cluster_p90": 59,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.072
+    },
+    {
+      "code": "E06000022",
+      "name": "Bath and North East Somerset",
+      "susceptibility": 0.074,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.742,
+      "median_r_local": 1.11,
+      "cluster_p50": 1,
+      "cluster_p90": 78,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.071
     },
@@ -1657,21 +1671,9 @@
       "prob_r_local_gt_1": 0.73,
       "median_r_local": 1.1,
       "cluster_p50": 1,
-      "cluster_p90": 65,
+      "cluster_p90": 57,
       "cluster_p99": 5000,
       "prob_large_outbreak": 0.067
-    },
-    {
-      "code": "E10000014",
-      "name": "Hampshire",
-      "susceptibility": 0.073,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.726,
-      "median_r_local": 1.1,
-      "cluster_p50": 1,
-      "cluster_p90": 48,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.064
     },
     {
       "code": "E06000054",
@@ -1681,9 +1683,21 @@
       "prob_r_local_gt_1": 0.709,
       "median_r_local": 1.09,
       "cluster_p50": 1,
-      "cluster_p90": 43,
+      "cluster_p90": 51,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.063
+      "prob_large_outbreak": 0.065
+    },
+    {
+      "code": "E10000014",
+      "name": "Hampshire",
+      "susceptibility": 0.073,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.726,
+      "median_r_local": 1.1,
+      "cluster_p50": 1,
+      "cluster_p90": 38,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.064
     },
     {
       "code": "E06000011",
@@ -1693,9 +1707,9 @@
       "prob_r_local_gt_1": 0.714,
       "median_r_local": 1.09,
       "cluster_p50": 1,
-      "cluster_p90": 39,
+      "cluster_p90": 51,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.061
+      "prob_large_outbreak": 0.063
     },
     {
       "code": "E08000016",
@@ -1705,9 +1719,9 @@
       "prob_r_local_gt_1": 0.67,
       "median_r_local": 1.07,
       "cluster_p50": 1,
-      "cluster_p90": 42,
+      "cluster_p90": 40,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.058
+      "prob_large_outbreak": 0.054
     },
     {
       "code": "E06000024",
@@ -1717,21 +1731,9 @@
       "prob_r_local_gt_1": 0.664,
       "median_r_local": 1.07,
       "cluster_p50": 1,
-      "cluster_p90": 39,
+      "cluster_p90": 30,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.058
-    },
-    {
-      "code": "E08000037",
-      "name": "Gateshead",
-      "susceptibility": 0.069,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.596,
-      "median_r_local": 1.04,
-      "cluster_p50": 1,
-      "cluster_p90": 33,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.044
+      "prob_large_outbreak": 0.052
     },
     {
       "code": "E08000022",
@@ -1741,9 +1743,21 @@
       "prob_r_local_gt_1": 0.592,
       "median_r_local": 1.04,
       "cluster_p50": 1,
-      "cluster_p90": 27,
+      "cluster_p90": 33,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.042
+      "prob_large_outbreak": 0.049
+    },
+    {
+      "code": "E08000037",
+      "name": "Gateshead",
+      "susceptibility": 0.069,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.596,
+      "median_r_local": 1.04,
+      "cluster_p50": 1,
+      "cluster_p90": 28,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.043
     },
     {
       "code": "E06000026",
@@ -1755,19 +1769,7 @@
       "cluster_p50": 1,
       "cluster_p90": 26,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.041
-    },
-    {
-      "code": "E06000037",
-      "name": "West Berkshire",
-      "susceptibility": 0.068,
-      "susceptibility_imputed": false,
-      "prob_r_local_gt_1": 0.562,
-      "median_r_local": 1.03,
-      "cluster_p50": 1,
-      "cluster_p90": 27,
-      "cluster_p99": 5000,
-      "prob_large_outbreak": 0.037
+      "prob_large_outbreak": 0.043
     },
     {
       "code": "E08000024",
@@ -1777,9 +1779,21 @@
       "prob_r_local_gt_1": 0.528,
       "median_r_local": 1.01,
       "cluster_p50": 1,
-      "cluster_p90": 26,
+      "cluster_p90": 24,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.036
+      "prob_large_outbreak": 0.04
+    },
+    {
+      "code": "E06000037",
+      "name": "West Berkshire",
+      "susceptibility": 0.068,
+      "susceptibility_imputed": false,
+      "prob_r_local_gt_1": 0.562,
+      "median_r_local": 1.03,
+      "cluster_p50": 1,
+      "cluster_p90": 28,
+      "cluster_p99": 5000,
+      "prob_large_outbreak": 0.037
     },
     {
       "code": "E06000059",
@@ -1789,9 +1803,9 @@
       "prob_r_local_gt_1": 0.523,
       "median_r_local": 1.01,
       "cluster_p50": 1,
-      "cluster_p90": 26,
+      "cluster_p90": 22,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.036
+      "prob_large_outbreak": 0.034
     },
     {
       "code": "E06000047",
@@ -1801,9 +1815,9 @@
       "prob_r_local_gt_1": 0.451,
       "median_r_local": 0.98,
       "cluster_p50": 1,
-      "cluster_p90": 19,
+      "cluster_p90": 22,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.027
+      "prob_large_outbreak": 0.026
     },
     {
       "code": "E06000057",
@@ -1815,7 +1829,7 @@
       "cluster_p50": 1,
       "cluster_p90": 20,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.024
+      "prob_large_outbreak": 0.023
     },
     {
       "code": "E06000064",
@@ -1825,9 +1839,9 @@
       "prob_r_local_gt_1": 0.306,
       "median_r_local": 0.93,
       "cluster_p50": 1,
-      "cluster_p90": 14,
+      "cluster_p90": 16,
       "cluster_p99": 5000,
-      "prob_large_outbreak": 0.014
+      "prob_large_outbreak": 0.013
     },
     {
       "code": "E06000063",
@@ -1837,8 +1851,8 @@
       "prob_r_local_gt_1": 0.168,
       "median_r_local": 0.88,
       "cluster_p50": 1,
-      "cluster_p90": 11,
-      "cluster_p99": 180,
+      "cluster_p90": 13,
+      "cluster_p99": 348,
       "prob_large_outbreak": 0.004
     },
     {
@@ -1850,7 +1864,7 @@
       "median_r_local": 0.8,
       "cluster_p50": 1,
       "cluster_p90": 9,
-      "cluster_p99": 114,
+      "cluster_p99": 106,
       "prob_large_outbreak": 0
     }
   ],

@@ -149,7 +149,10 @@ and disclosure-controlled, so no personal data sits under the exception.
 
 ## 5. Population denominators (per-capita susceptibility / importation pressure)
 
-- **Source:** ONS mid-year population estimates.
+- **Source:** ONS mid-year population estimates via **Nomis** (dataset NM_2002_1).
+  Nomis resolves GSS codes directly, so `dat/fetch_population.py` queries the 153
+  boundary codes and joins by code → `dat/population_utla.csv` (all 153 matched,
+  2024 estimates). Used as the offset in the seam-2 susceptibility→cases SBI fit.
 - **Licence:** OGL v3.0 — ONS T&Cs: *"Most content on this website is subject to
   Crown copyright protection and is published under the Open Government Licence."*
 

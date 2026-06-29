@@ -282,6 +282,33 @@ file originally proposed. Gating checks before build:
    **Next (post-gating, productionisation):** real-snapshot reporting-delay (replace
    the assumed curve), `resolve`/`risk-backtest`/ablation commands, dashboard.
 
+## Stochadex integration (post-gating)
+
+The gating-check kernels were built standalone (correctness-first) and are now
+being wired into the stochadex engine across three seams:
+
+1. ✅ **Done (2026-06-29).** Sub-model B as a stochadex `Iteration`:
+   `BranchingProcessIteration` (`pkg/measles/transmission_iteration.go` +
+   `transmission_settings.yaml`) advances the outbreak one generation per step;
+   an ensemble of seeds is the cluster-size distribution. Runs under the
+   stochadex partition coordinator and test harness; shares `nextGeneration()`
+   with the standalone kernel so the two cannot drift. This is the form that
+   compiles to WASM for the dashboard's client-side per-UTLA ensembles.
+2. ✅ **Done (2026-06-29).** Fitting via stochadex SBI. `pkg/measles/caselink.go`
+   fits the susceptibility→cases observation model
+   `log μ_i = α + log(pop_i/popBar) + β·z_i` to the **real censored UTLA counts**
+   using `inference.ComputePosterior` + `inference.UniformPrior` and the censored
+   Poisson likelihood (#3) — iterated importance sampling (population Monte Carlo,
+   ESS ≈ 12.8k/20k). Validated by synthetic recovery (α,β within ~1 sd). Real
+   finding: **β = 0.80, 95% CI [0.73, 0.87]** — susceptibility significantly
+   predicts where cases concentrated. Committed into the risk map as
+   `susceptibility_case_link`. Needed `ingest-population` (`dat/fetch_population.py`,
+   ONS via Nomis). *Note: programmatic SBI, not the `cfg/*.yaml` codegen path,
+   which is heavier and built for time series — this cross-sectional fit is cleaner
+   via `ComputePosterior` directly.*
+3. ⬜ `cmd/forecast` → stochadex CLI + YAML config (optional), then the
+   dexetera/WASM dashboard (`app/`).
+
 All five sources confirmed OGL v3.0 (SOURCES.md); ONS geography needs the extra
 OS Crown-copyright-and-database-right attribution line.
 

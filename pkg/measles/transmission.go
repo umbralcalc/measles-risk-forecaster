@@ -50,31 +50,36 @@ func ProbSelfSustaining(s, r0Min, r0Max float64) float64 {
 	return (r0Max - threshold) / (r0Max - r0Min)
 }
 
-// simulateCluster runs one Galton-Watson branching process seeded by a single
-// importation, with negative-binomial offspring (mean rLocal, dispersion k via a
-// Poisson-Gamma mixture). It returns the final cluster size, capped at cap (a
-// supercritical process is stopped once it reaches cap and reported as cap).
-func simulateCluster(rLocal, dispersion float64, cap int, rng *rand.Rand) int {
-	if rLocal <= 0 {
-		return 1
+// nextGeneration draws the total number of secondary cases produced by the
+// current generation of `infectious` cases, each with negative-binomial offspring
+// (mean rLocal, dispersion k). Because the sum of n iid NegBin(mean rLocal,
+// dispersion k) offspring counts is itself Poisson(Gamma(shape = n*k, rate =
+// k/rLocal)), the whole generation is one Gamma draw plus one Poisson draw —
+// exact, and O(1) in the generation size rather than O(n). This single step is
+// shared by the standalone kernel and the stochadex BranchingProcessIteration,
+// so the two cannot drift apart.
+func nextGeneration(infectious int, rLocal, dispersion float64, rng *rand.Rand) int {
+	if infectious <= 0 || rLocal <= 0 {
+		return 0
 	}
-	gamma := distuv.Gamma{Alpha: dispersion, Beta: dispersion / rLocal, Src: rng}
-	pois := distuv.Poisson{Src: rng}
+	shape := float64(infectious) * dispersion
+	rate := dispersion / rLocal
+	lambda := distuv.Gamma{Alpha: shape, Beta: rate, Src: rng}.Rand()
+	return int(distuv.Poisson{Lambda: lambda, Src: rng}.Rand())
+}
 
+// simulateCluster runs one Galton-Watson branching process seeded by a single
+// importation. It returns the final cluster size, capped at cap (a supercritical
+// process is stopped once it reaches cap and reported as cap).
+func simulateCluster(rLocal, dispersion float64, cap int, rng *rand.Rand) int {
 	size := 1
 	infectious := 1
 	for infectious > 0 && size < cap {
-		next := 0
-		for c := 0; c < infectious; c++ {
-			pois.Lambda = gamma.Rand() // NegBin offspring = Poisson(Gamma)
-			n := int(pois.Rand())
-			next += n
-			size += n
-			if size >= cap {
-				return cap
-			}
+		infectious = nextGeneration(infectious, rLocal, dispersion, rng)
+		size += infectious
+		if size >= cap {
+			return cap
 		}
-		infectious = next
 	}
 	return size
 }

@@ -50,11 +50,28 @@ type nowcastEntry struct {
 	Upper        float64 `json:"upper"`
 }
 
+// caseLinkBlock is the seam-2 SBI result: the posterior on how strongly the
+// susceptibility surface predicts where cases actually concentrated, fitted to
+// the censored UTLA counts. Committed alongside the map so the calibration claim
+// travels with the forecast.
+type caseLinkBlock struct {
+	ReportYear     int       `json:"report_year"`
+	Alpha          float64   `json:"alpha"`
+	Beta           float64   `json:"beta"`
+	BetaStd        float64   `json:"beta_std"`
+	BetaCI95       []float64 `json:"beta_ci95"`
+	BetaPredictsCases bool   `json:"beta_predicts_cases"`
+	LogMarginalLik float64   `json:"log_marginal_lik"`
+	EffectiveSampleSize float64 `json:"effective_sample_size"`
+	NumParticles   int       `json:"num_particles"`
+}
+
 type riskMap struct {
 	GeneratedDate string         `json:"generated_date"`
 	DataVintage   map[string]any `json:"data_vintage"`
 	Model         map[string]any `json:"model"`
 	Attribution   string         `json:"attribution"`
+	SusceptibilityCaseLink *caseLinkBlock `json:"susceptibility_case_link"`
 	UTLAs         []riskEntry    `json:"utlas"`
 	NationalNowcast []nowcastEntry `json:"national_nowcast"`
 }
@@ -94,6 +111,9 @@ func main() {
 		3.0 /*tau*/, 50.0 /*obsPrecision*/)
 	must(err, "build susceptibility surface")
 
+	// --- seam 2: fit the susceptibility->cases link (SBI) ---
+	caseLink := fitCaseLink(graph, surf, *datadir, *seed)
+
 	// --- sub-model B: per-UTLA transmission risk ---
 	tp := measles.DefaultTransmissionParams()
 	entries := make([]riskEntry, graph.NumNodes())
@@ -130,7 +150,8 @@ func main() {
 			"car_tau": 3.0, "mmr1_efficacy": measles.DefaultMMR1Efficacy,
 			"mmr2_efficacy": measles.DefaultMMR2Efficacy, "seed": *seed,
 		},
-		Attribution: attribution, UTLAs: entries, NationalNowcast: nowcast,
+		Attribution: attribution, SusceptibilityCaseLink: caseLink,
+		UTLAs: entries, NationalNowcast: nowcast,
 	}
 
 	must(os.MkdirAll(*outdir, 0o755), "mkdir outdir")
@@ -151,6 +172,60 @@ func main() {
 		fmt.Printf("    %-26s s=%.3f  P(R>1)=%.2f  P(large)=%.2f  cluster p50/p90/p99=%d/%d/%d\n",
 			e.Name, e.Susceptibility, e.ProbRLocalGt1, e.ProbLargeOutbreak,
 			e.ClusterP50, e.ClusterP90, e.ClusterP99)
+	}
+	if caseLink != nil {
+		fmt.Printf("  Susceptibility->cases link (%d, SBI): beta=%.2f CI[%.2f,%.2f] "+
+			"-> predicts cases=%v (ESS=%.0f/%d)\n",
+			caseLink.ReportYear, caseLink.Beta, caseLink.BetaCI95[0], caseLink.BetaCI95[1],
+			caseLink.BetaPredictsCases, caseLink.EffectiveSampleSize, caseLink.NumParticles)
+	}
+}
+
+// fitCaseLink runs the seam-2 SBI: load population + the latest report year's
+// censored UTLA case counts and fit how strongly susceptibility predicts case
+// concentration. Returns nil (with a warning) if the inputs are unavailable, so
+// the map still commits.
+func fitCaseLink(
+	graph *measles.AdjacencyGraph,
+	surf *measles.SusceptibilitySurface,
+	datadir string,
+	seed uint64,
+) *caseLinkBlock {
+	popMap, err := measles.LoadPopulation(filepath.Join(datadir, "population_utla.csv"))
+	if err != nil {
+		fmt.Printf("  (skip case-link: %v)\n", err)
+		return nil
+	}
+	pop, err := measles.PopulationVector(graph, popMap)
+	if err != nil {
+		fmt.Printf("  (skip case-link: %v)\n", err)
+		return nil
+	}
+	cases, err := measles.LoadUTLACases(filepath.Join(datadir, "measles_cases_utla.csv"))
+	if err != nil {
+		fmt.Printf("  (skip case-link: %v)\n", err)
+		return nil
+	}
+	year := 0
+	for _, c := range cases {
+		if c.ReportYear > year {
+			year = c.ReportYear
+		}
+	}
+	obs := measles.BuildCensoredCaseObservations(graph, cases, year)
+	post, err := measles.FitCaseLink(surf.Smoothed, pop, obs.Counts,
+		measles.DefaultSuppressionThreshold, 20000, measles.DefaultCaseLinkPriors(), seed)
+	if err != nil {
+		fmt.Printf("  (skip case-link: %v)\n", err)
+		return nil
+	}
+	return &caseLinkBlock{
+		ReportYear: year, Alpha: round2(post.Alpha), Beta: round2(post.Beta),
+		BetaStd:  round3(post.BetaStd),
+		BetaCI95: []float64{round2(post.BetaCI95[0]), round2(post.BetaCI95[1])},
+		BetaPredictsCases:   post.BetaExcludesZero(),
+		LogMarginalLik:      round1(post.LogMarginalLik),
+		EffectiveSampleSize: round1(post.EffectiveSampleSize), NumParticles: post.NumParticles,
 	}
 }
 
