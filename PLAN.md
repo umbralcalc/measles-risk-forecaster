@@ -264,7 +264,23 @@ file originally proposed. Gating checks before build:
    (exact ICAR invariant) and beating zero-fill — the #3↔#4 link. Remaining for a
    full check: rerun on the *real* 2024 London/West Midlands data once cases +
    coverage are ingested and joined (overlaps with #5).
-5. ⬜ One end-to-end committed risk map for one report cycle before scaling.
+5. ✅ **Done (2026-06-29).** End-to-end committed risk map. `ingest-coverage`
+   (`dat/fetch_coverage.py`) + `ingest-cases` (`dat/fetch_cases.py`: Region×week
+   API + UTLA HTML scrape with row-omission censoring). Sub-models, all in
+   `pkg/measles` and unit-tested (20 tests):
+   - **A susceptibility** (`coverage.go`): COVER → effective susceptibility → CAR
+     surface, COVER↔boundary mismatches reconciled. London ≈0.21 vs national ≈0.10.
+   - **B transmission** (`transmission.go`): R_local=R0·s, negative-binomial
+     branching process → P(R_local>1), cluster-size tail. Validated vs analytic
+     mean total progeny 1/(1−m).
+   - **C nowcast** (`nowcast.go`): reporting-lag right-truncation, Gamma-posterior
+     interval; 95% coverage = 0.95 on synthetic truncated data.
+   - **`cmd/forecast`** writes `data/predictions/<date>.json`. First committed map
+     (2026-06-29): top risk = Hackney + London boroughs (the real 2025 hotspots);
+     high-coverage areas (e.g. South Tyneside) below the herd-immunity threshold.
+
+   **Next (post-gating, productionisation):** real-snapshot reporting-delay (replace
+   the assumed curve), `resolve`/`risk-backtest`/ablation commands, dashboard.
 
 All five sources confirmed OGL v3.0 (SOURCES.md); ONS geography needs the extra
 OS Crown-copyright-and-database-right attribution line.

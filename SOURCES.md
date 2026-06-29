@@ -27,6 +27,10 @@ and disclosure-controlled, so no personal data sits under the exception.
   South East, South West, West Midlands, Yorkshire and Humber).
 - **No UTLA/LTLA in the API.** Confirmed by walking `…/Measles/geography_types`
   (gating check #1). Clean JSON, fast cadence; fine in time, coarse in space.
+- **Metric:** `measles_cases_casesByOnsetWeek`, weekly, with an
+  `in_reporting_delay_period` flag marking still-truncated weeks (feeds nowcast C).
+- **Ingest:** `dat/fetch_cases.py` → `dat/measles_cases_region_week.csv`
+  (1200 rows, 9 regions, weekly from 2023-w39).
 - **Licence:** OGL v3.0 — *"All content is available under the Open Government
   Licence v3.0, except where otherwise stated"*, © Crown copyright.
 
@@ -36,7 +40,12 @@ and disclosure-controlled, so no personal data sits under the exception.
   and upper tier local authority" report. Updated **every 2 weeks**.
 - **Format:** **inline HTML tables — no CSV/ODS/Excel download.** Ingestion needs
   an HTML scraper; markup has varied year-to-year (2023 ≠ 2026 structure), so the
-  parser must be version-aware and brittle by nature.
+  parser must be version-aware and brittle by nature. **Ingest:** `dat/fetch_cases.py`
+  (stdlib `html.parser`, follows the collection-slug redirect to
+  `measles-epidemiology-2023-to-2026`) → `dat/measles_cases_utla.csv`. Listed UTLAs
+  per report year: 2024=64, 2025=26, 2026=24 (≥10 cases); all others row-omitted.
+  Reconstructed to censored `[0,9]` against the boundary set by
+  `BuildCensoredCaseObservations` in `pkg/measles/cases.go`.
 - **Granularity — CONFIRMED (2024, 2025, 2026 reports):** UTLA is **only ever a
   single cumulative total** over the report window. There is **no UTLA×month panel
   anywhere** — the page title "by month, age, region and UTLA" is misleading. Each
@@ -85,10 +94,28 @@ and disclosure-controlled, so no personal data sits under the exception.
     accounting in sub-model A).
   - Metrics: `MMR{1,2}_coverage_coverageByYear` (coverage %, e.g. 88.09) and
     `MMR{1,2}_coverage_oneYearChange`.
+- **Ingest:** `dat/fetch_coverage.py` → `dat/cover_mmr_coverage.csv` (5394 rows;
+  152 UTLAs × 2 doses × 2 strata × 2014–2025; long format, carries ONS
+  `geography_code`). Committed (Go susceptibility tests depend on it).
+- **Join to the boundary/adjacency set (#4) — reconciled, 2 mismatch types:**
+  148/152 match by code directly. The rest:
+  1. **Code-vintage:** COVER still emits *old county* codes for areas reorganised
+     to unitary in 2023 — `E10000023` North Yorkshire → `E06000065`, `E10000027`
+     Somerset → `E06000066`. Remapped by `coverCodeCrosswalk` in coverage.go.
+     (COVER's legacy `E06000029` Poole / `E10000021` Northamptonshire rows are
+     superseded duplicates — current successors already match; ignored.)
+  2. **Small-LA combination (disclosure caveat below):** Rutland, City of London,
+     Isles of Scilly have **no COVER row**. They get no direct observation and are
+     imputed by the CAR prior from neighbours — except Isles of Scilly (an isolated
+     island the prior cannot pool), assigned its documented parent Cornwall's value.
 - **Documented biases (to encode as explicit flags, not ignore):** London coverage
   may currently be *underestimated* (system/methodology change); small-population
-  LAs are combined for disclosure; coverage is by current age-milestone, not
-  historical cohort.
+  LAs are combined for disclosure (handled above); coverage is by current
+  age-milestone, not historical cohort.
+- **Susceptibility (sub-model A core):** `pkg/measles/coverage.go` turns coverage
+  into effective susceptible fraction (per-dose efficacies 0.93/0.97) and CAR-smooths
+  it. Real-data check: London mean susceptibility ≈0.21 vs national median ≈0.10 —
+  reproduces the low-coverage concentration the 2024 outbreaks tracked.
 - **Licence:** OGL v3.0, © Crown copyright.
 
 ## 4. UTLA boundaries + adjacency (spatial prior)
