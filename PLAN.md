@@ -309,6 +309,51 @@ being wired into the stochadex engine across three seams:
 3. ⬜ `cmd/forecast` → stochadex CLI + YAML config (optional), then the
    dexetera/WASM dashboard (`app/`).
 
+## Skill ceiling — the load-bearing honest figure
+
+✅ **Done (2026-07-03).** `cmd/skill-ceiling` (`pkg/measles/skill_ceiling.go`)
+computes the predictable-vs-irreducible decomposition on **real 2025 data**,
+writing `data/skill_ceiling.json`:
+
+- **Spatial: McFadden R² = 0.51, irreducible = 0.49** (LR = 759, hugely
+  significant). Susceptibility explains ~half of *where* cases concentrated beyond
+  population; **the other half is irreducible spark placement** — exactly the
+  high-coverage-unpredictability result the England & Wales literature established,
+  now quantified. This is the measles analogue of the bathing-water skill ceiling.
+- **Temporal: momentum R² = 0.81, lag-1 autocorr = 0.88** — but explicitly flagged
+  (in code and output) as **transmission persistence, not importation skill**. It
+  is an upper bound; conflating it with importation predictability is the trap.
+- Validated: the decomposition reports McFadden R²≈0.85 when susceptibility truly
+  drives synthetic cases, ≈0.00 when cases follow population only.
+
+## Importation predictability — feasibility verdict (2026-07-03)
+
+Can a shared national importation latent process add temporal/co-occurrence
+forecast skill? **Possible in principle, mechanism confirmed, but data-limited.**
+- **Identifiability exists but coarse:** UKHSA quarterly "Lab-confirmed measles,
+  rubella and mumps" reports classify cases imported / import-related / indigenous
+  (Q1 2025: 14.6% imported, 3.5% import-related) — national, quarterly, small-count.
+- **Leading covariate available:** ECDC monthly measles cases by country (EU/EEA);
+  WHO European Region 127,350 in 2024 (2× 2023). England's surge followed Europe's.
+  Flight-passenger dynamics (Nature 2024) usable for receptivity weights w_i.
+- **Verdict:** enough to establish the *mechanism*, not (yet) to fit a
+  well-identified weekly λ_nat(t). Build as a **coarse, wide-uncertainty national
+  importation-pressure index** feeding seed counts — not a precise weekly forecast.
+  Improves as quarters accrue. Do NOT sell the R²=0.81 momentum as importation skill.
+
+✅ **Built (2026-07-03).** `pkg/measles/importation.go` + `dat/fetch_european_measles.py`.
+The index is WHO European Region measles incidence (OWID, annual) relative to a
+baseline geomean, with a deliberately **wide band** from the [0.5, 1.5] elasticity
+uncertainty on the Europe→UK link. 2024: **~4–5× baseline, band [2×, 8×]**; 2021
+≈0 (pandemic collapse). Distributed to UTLAs by population-share receptivity and
+combined with local amplification P(self-sustaining) into a per-UTLA
+`importation_adjusted_pressure` score (the co-occurrence mechanism), committed in
+the risk map. Honest resolution is **annual** — monthly European series are not
+reliably machine-readable for 2023–26. Result is a distinct lens: pure P(large)
+tops with London boroughs (per-importation risk); importation-adjusted pressure
+tops with large counties (expected outbreak count). Future refinement:
+flight-connectivity receptivity weights; UKHSA quarterly import-count calibration.
+
 All five sources confirmed OGL v3.0 (SOURCES.md); ONS geography needs the extra
 OS Crown-copyright-and-database-right attribution line.
 

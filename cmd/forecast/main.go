@@ -39,6 +39,9 @@ type riskEntry struct {
 	ClusterP90        int     `json:"cluster_p90"`
 	ClusterP99        int     `json:"cluster_p99"`
 	ProbLargeOutbreak float64 `json:"prob_large_outbreak"`
+	// ImportationPressure = national index x receptivity x P(self-sustaining):
+	// a coarse relative expected-outbreak-pressure score (co-occurrence-aware).
+	ImportationPressure float64 `json:"importation_adjusted_pressure"`
 }
 
 type nowcastEntry struct {
@@ -66,12 +69,25 @@ type caseLinkBlock struct {
 	NumParticles   int       `json:"num_particles"`
 }
 
+// importationBlock is the coarse national importation-pressure index committed
+// with the map: European measles activity relative to baseline, wide-band.
+type importationBlock struct {
+	Year            int     `json:"european_data_year"`
+	EuropeanCases   float64 `json:"european_cases"`
+	BaselineGeomean float64 `json:"baseline_geomean"`
+	RelativeCentral float64 `json:"relative_central"`
+	RelativeLow     float64 `json:"relative_low"`
+	RelativeHigh    float64 `json:"relative_high"`
+	Note            string  `json:"note"`
+}
+
 type riskMap struct {
 	GeneratedDate string         `json:"generated_date"`
 	DataVintage   map[string]any `json:"data_vintage"`
 	Model         map[string]any `json:"model"`
 	Attribution   string         `json:"attribution"`
 	SusceptibilityCaseLink *caseLinkBlock `json:"susceptibility_case_link"`
+	NationalImportationPressure *importationBlock `json:"national_importation_pressure"`
 	UTLAs         []riskEntry    `json:"utlas"`
 	NationalNowcast []nowcastEntry `json:"national_nowcast"`
 }
@@ -80,6 +96,7 @@ const attribution = "Contains public sector information from UKHSA (measles " +
 	"epidemiology and COVER vaccination coverage) and the Office for National " +
 	"Statistics (geographies and population), licensed under the Open Government " +
 	"Licence v3.0. Contains OS data © Crown copyright and database right 2024. " +
+	"European measles incidence: WHO via Our World in Data (CC-BY 4.0). " +
 	"Not an official source of measles risk assessment."
 
 func main() {
@@ -114,18 +131,26 @@ func main() {
 	// --- seam 2: fit the susceptibility->cases link (SBI) ---
 	caseLink := fitCaseLink(graph, surf, *datadir, *seed)
 
+	// --- coarse national importation-pressure index + per-UTLA receptivity ---
+	imp, receptivity := importationPressure(graph, *datadir, time.Now().Year())
+
 	// --- sub-model B: per-UTLA transmission risk ---
 	tp := measles.DefaultTransmissionParams()
 	entries := make([]riskEntry, graph.NumNodes())
 	for i := 0; i < graph.NumNodes(); i++ {
 		r := measles.ForecastUTLARisk(surf.Smoothed[i], tp, rng)
-		entries[i] = riskEntry{
+		e := riskEntry{
 			Code: graph.Codes[i], Name: graph.Names[i],
 			Susceptibility: round3(surf.Smoothed[i]), Imputed: surf.Imputed[i],
 			ProbRLocalGt1: round3(r.ProbRLocalGt1), MedianRLocal: round2(r.MedianRLocal),
 			ClusterP50: r.ClusterP50, ClusterP90: r.ClusterP90, ClusterP99: r.ClusterP99,
 			ProbLargeOutbreak: round3(r.ProbLargeOutbreak),
 		}
+		if imp != nil && receptivity != nil {
+			e.ImportationPressure = round4(
+				imp.RelativeCentral * receptivity[i] * r.ProbRLocalGt1)
+		}
+		entries[i] = e
 	}
 	sort.Slice(entries, func(a, b int) bool {
 		if entries[a].ProbLargeOutbreak != entries[b].ProbLargeOutbreak {
@@ -151,7 +176,7 @@ func main() {
 			"mmr2_efficacy": measles.DefaultMMR2Efficacy, "seed": *seed,
 		},
 		Attribution: attribution, SusceptibilityCaseLink: caseLink,
-		UTLAs: entries, NationalNowcast: nowcast,
+		NationalImportationPressure: imp, UTLAs: entries, NationalNowcast: nowcast,
 	}
 
 	must(os.MkdirAll(*outdir, 0o755), "mkdir outdir")
@@ -179,6 +204,61 @@ func main() {
 			caseLink.ReportYear, caseLink.Beta, caseLink.BetaCI95[0], caseLink.BetaCI95[1],
 			caseLink.BetaPredictsCases, caseLink.EffectiveSampleSize, caseLink.NumParticles)
 	}
+	if imp != nil {
+		fmt.Printf("  National importation pressure (%d European data): %.1fx baseline "+
+			"[%.1f, %.1f] (coarse, wide-band)\n",
+			imp.Year, imp.RelativeCentral, imp.RelativeLow, imp.RelativeHigh)
+		byImp := make([]riskEntry, len(entries))
+		copy(byImp, entries)
+		sort.Slice(byImp, func(a, b int) bool {
+			return byImp[a].ImportationPressure > byImp[b].ImportationPressure
+		})
+		fmt.Printf("  Top 5 by importation-adjusted pressure:")
+		for _, e := range byImp[:5] {
+			fmt.Printf(" %s(%.4f)", e.Name, e.ImportationPressure)
+		}
+		fmt.Println()
+	}
+}
+
+// importationPressure builds the coarse national index for forecastYear and the
+// per-UTLA population-share receptivity weights. Returns (nil, nil) if inputs are
+// unavailable, so the map still commits without the importation layer.
+func importationPressure(
+	graph *measles.AdjacencyGraph, datadir string, forecastYear int,
+) (*importationBlock, []float64) {
+	series, err := measles.LoadEuropeanIncidence(
+		filepath.Join(datadir, "european_measles_annual.csv"))
+	if err != nil {
+		fmt.Printf("  (skip importation: %v)\n", err)
+		return nil, nil
+	}
+	popMap, err := measles.LoadPopulation(filepath.Join(datadir, "population_utla.csv"))
+	if err != nil {
+		fmt.Printf("  (skip importation: %v)\n", err)
+		return nil, nil
+	}
+	pop, err := measles.PopulationVector(graph, popMap)
+	if err != nil {
+		fmt.Printf("  (skip importation: %v)\n", err)
+		return nil, nil
+	}
+	base := measles.RecentBaselineYears(series, forecastYear, 8)
+	p, err := measles.ComputeImportationPressure(series, forecastYear, base)
+	if err != nil {
+		fmt.Printf("  (skip importation: %v)\n", err)
+		return nil, nil
+	}
+	block := &importationBlock{
+		Year: p.Year, EuropeanCases: p.EuropeanCases,
+		BaselineGeomean: round1(p.BaselineGeomean),
+		RelativeCentral: round2(p.RelativeCentral),
+		RelativeLow:     round2(p.RelativeLow), RelativeHigh: round2(p.RelativeHigh),
+		Note: "Coarse annual importation-pressure proxy: WHO European Region measles " +
+			"activity relative to baseline. Wide band reflects weak Europe->UK " +
+			"identification. Not a weekly forecast (see PLAN.md).",
+	}
+	return block, measles.ReceptivityWeights(pop)
 }
 
 // fitCaseLink runs the seam-2 SBI: load population + the latest report year's
@@ -302,3 +382,4 @@ func must(err error, ctx string) {
 func round1(x float64) float64 { return float64(int(x*10+0.5)) / 10 }
 func round2(x float64) float64 { return float64(int(x*100+0.5)) / 100 }
 func round3(x float64) float64 { return float64(int(x*1000+0.5)) / 1000 }
+func round4(x float64) float64 { return float64(int(x*10000+0.5)) / 10000 }

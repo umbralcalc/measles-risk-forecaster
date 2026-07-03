@@ -1,0 +1,25 @@
+{
+  "headline": "Susceptibility explains ~51% of where cases concentrate (McFadden R2=0.51); ~49% is irreducible spark placement. National activity is 81% short-horizon predictable, but that is transmission momentum, not importation skill.",
+  "report_year": 2025,
+  "spatial": {
+    "beta": 0.92,
+    "beta_ci95": [
+      0.84,
+      0.99
+    ],
+    "interpretation": "susceptibility explains this McFadden-R2 share of case-concentration deviance beyond population; the remainder is irreducible spark placement",
+    "irreducible_frac": 0.488,
+    "lr_statistic": 758.6,
+    "mcfadden_r2": 0.512,
+    "n_censored": 127,
+    "n_listed": 26,
+    "question": "Does the susceptibility surface predict WHERE cases concentrate, beyond population?"
+  },
+  "temporal": {
+    "caveat": "MomentumR2 reflects transmission persistence (ongoing outbreaks), not importation-rate predictability; it is an upper bound on temporal skill.",
+    "lag1_autocorr": 0.876,
+    "momentum_r2": 0.809,
+    "n_weeks": 138,
+    "question": "How predictable is national weekly activity short-horizon?"
+  }
+}

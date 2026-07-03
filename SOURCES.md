@@ -156,6 +156,30 @@ and disclosure-controlled, so no personal data sits under the exception.
 - **Licence:** OGL v3.0 — ONS T&Cs: *"Most content on this website is subject to
   Crown copyright protection and is published under the Open Government Licence."*
 
+## 6. Importation-pressure covariate
+
+- **European measles incidence — INGESTED (2026-07-03).** Our World in Data
+  "Reported cases of measles" (WHO-sourced), entity **"Europe (WHO)"** = WHO
+  European Region, **annual**. `dat/fetch_european_measles.py` →
+  `dat/european_measles_annual.csv` (45 years). Drives the coarse importation-
+  pressure index (`pkg/measles/importation.go`). Values: 2024 = 148,974 (surge),
+  2021 = 109 (pandemic collapse), 2019 = 106,481.
+  - **Resolution is annual by necessity:** monthly European series (ECDC
+    `measles-rubella-monthly.ecdc.europa.eu`; WHO provisional monthly) are **not
+    reliably machine-readable** for 2023–26. Annual is what the index honestly
+    supports — matching the wide-band, coarse design.
+  - **Licence:** OWID data CC-BY 4.0; underlying data WHO/UNICEF. Attribution:
+    "Data: WHO (via Our World in Data)". **Not OGL** — distinct from the UK sources;
+    CC-BY attribution required if derived data is published.
+
+- **Identified, not yet ingested** (for future calibration/refinement):
+  - **UKHSA case-origin classification** — quarterly GOV.UK "Lab-confirmed measles,
+    rubella and mumps" reports (imported/import-related/indigenous). Prose, not
+    tables (Q1 2025: 33 imported, 7 import-related). National, quarterly, tiny — a
+    calibration target for the index's absolute scale. OGL v3.0.
+  - **Flight-passenger dynamics** (Nature Sci Data 2024) — for UTLA receptivity
+    weights w_i (currently population-share). Third-party; licence to check if used.
+
 ## Attribution string (for the dashboard footer)
 
 > Contains public sector information from the UK Health Security Agency (measles
