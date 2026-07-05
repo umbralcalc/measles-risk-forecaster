@@ -26,6 +26,7 @@ import (
 	"time"
 
 	"github.com/umbralcalc/measles-risk-forecaster/pkg/measles"
+	"github.com/umbralcalc/stochadex/pkg/inference"
 )
 
 type riskEntry struct {
@@ -81,13 +82,44 @@ type importationBlock struct {
 	Note            string  `json:"note"`
 }
 
+// jointBlock summarises the joint co-occurrence simulation: a shared national
+// importation latent feeding all UTLAs, so the national-total tail and the number
+// of UTLAs lighting up together are captured with their correct correlation.
+type jointBlock struct {
+	NScenarios            int       `json:"n_scenarios"`
+	SeedBand              []float64 `json:"national_seed_band"`
+	ExpectedUTLAsOutbreak float64   `json:"expected_utlas_with_outbreak"`
+	P90UTLAsOutbreak      float64   `json:"p90_utlas_with_outbreak"`
+	// Relative tail fatness (p90/p50, p99/p50 of national activity), the
+	// co-occurrence signature. Reported as ratios, NOT absolute case counts,
+	// because the pure branching process has no susceptible depletion and is
+	// therefore uncalibrated in absolute magnitude.
+	NationalTailRatioP90 float64 `json:"national_tail_ratio_p90"`
+	NationalTailRatioP99 float64 `json:"national_tail_ratio_p99"`
+	Note                 string  `json:"note"`
+}
+
+// calibrationBlock is the reachable-cluster-size calibration: the well-mixed
+// susceptible community per introduction, fitted to the observed UTLA totals so
+// absolute outbreak sizes are data-driven rather than assumed.
+type calibrationBlock struct {
+	ReachableCluster    float64   `json:"reachable_cluster"`
+	ReachableClusterCI  []float64 `json:"reachable_cluster_ci95"`
+	ImportScale         float64   `json:"import_scale"`
+	R0Used              float64   `json:"r0_used"`
+	EffectiveSampleSize float64   `json:"effective_sample_size"`
+	ReportYear          int       `json:"report_year"`
+}
+
 type riskMap struct {
 	GeneratedDate string         `json:"generated_date"`
 	DataVintage   map[string]any `json:"data_vintage"`
 	Model         map[string]any `json:"model"`
+	ClusterCalibration *calibrationBlock `json:"cluster_calibration"`
 	Attribution   string         `json:"attribution"`
 	SusceptibilityCaseLink *caseLinkBlock `json:"susceptibility_case_link"`
 	NationalImportationPressure *importationBlock `json:"national_importation_pressure"`
+	JointCoOccurrence *jointBlock `json:"joint_cooccurrence"`
 	UTLAs         []riskEntry    `json:"utlas"`
 	NationalNowcast []nowcastEntry `json:"national_nowcast"`
 }
@@ -128,17 +160,30 @@ func main() {
 		3.0 /*tau*/, 50.0 /*obsPrecision*/)
 	must(err, "build susceptibility surface")
 
+	// --- population (denominator for susceptible-depletion pools) ---
+	population := loadPopulationVector(graph, *datadir)
+
 	// --- seam 2: fit the susceptibility->cases link (SBI) ---
 	caseLink := fitCaseLink(graph, surf, *datadir, *seed)
 
 	// --- coarse national importation-pressure index + per-UTLA receptivity ---
 	imp, receptivity := importationPressure(graph, *datadir, time.Now().Year())
 
-	// --- sub-model B: per-UTLA transmission risk ---
+	// --- calibrate the reachable-cluster size to observed outbreak sizes ---
+	calib := calibrateCluster(graph, surf, receptivity, *datadir)
+
+	// --- sub-model B: per-UTLA transmission risk (with susceptible depletion) ---
 	tp := measles.DefaultTransmissionParams()
+	if calib != nil {
+		tp.ReachableClusterSize = calib.ReachableCluster
+	}
 	entries := make([]riskEntry, graph.NumNodes())
 	for i := 0; i < graph.NumNodes(); i++ {
-		r := measles.ForecastUTLARisk(surf.Smoothed[i], tp, rng)
+		popI := 200000.0 // fallback if population unavailable
+		if population != nil {
+			popI = population[i]
+		}
+		r := measles.ForecastUTLARisk(surf.Smoothed[i], popI, tp, rng)
 		e := riskEntry{
 			Code: graph.Codes[i], Name: graph.Names[i],
 			Susceptibility: round3(surf.Smoothed[i]), Imputed: surf.Imputed[i],
@@ -159,6 +204,9 @@ func main() {
 		return entries[a].Susceptibility > entries[b].Susceptibility
 	})
 
+	// --- joint co-occurrence simulation (shared importation latent) ---
+	joint := jointCoOccurrence(surf, receptivity, population, imp, tp.ReachableClusterSize, *seed)
+
 	// --- sub-model C: national reporting-lag nowcast ---
 	nowcast, latestWeek := nationalNowcast(regionWeek)
 
@@ -171,12 +219,21 @@ func main() {
 		},
 		Model: map[string]any{
 			"r0_min": tp.R0Min, "r0_max": tp.R0Max, "dispersion": tp.Dispersion,
-			"num_sims": tp.NumSims, "outbreak_cap": tp.OutbreakCap,
+			"num_sims": tp.NumSims, "large_outbreak_threshold": tp.LargeOutbreakThreshold,
+			"effective_pool_fraction": tp.EffectivePoolFraction,
+			"reachable_cluster_size": tp.ReachableClusterSize,
 			"car_tau": 3.0, "mmr1_efficacy": measles.DefaultMMR1Efficacy,
 			"mmr2_efficacy": measles.DefaultMMR2Efficacy, "seed": *seed,
+			"cluster_size_caveat": "Reachable-cluster size is calibrated to observed " +
+				"outbreak sizes (see cluster_calibration) but with wide uncertainty; a " +
+				"taken-off outbreak fills the reachable community, so absolute sizes " +
+				"saturate near it. P(R_local>1) and P(large_outbreak) are the robust, " +
+				"calibration-free discriminators.",
 		},
+		ClusterCalibration: calib,
 		Attribution: attribution, SusceptibilityCaseLink: caseLink,
-		NationalImportationPressure: imp, UTLAs: entries, NationalNowcast: nowcast,
+		NationalImportationPressure: imp, JointCoOccurrence: joint,
+		UTLAs: entries, NationalNowcast: nowcast,
 	}
 
 	must(os.MkdirAll(*outdir, 0o755), "mkdir outdir")
@@ -204,6 +261,18 @@ func main() {
 			caseLink.ReportYear, caseLink.Beta, caseLink.BetaCI95[0], caseLink.BetaCI95[1],
 			caseLink.BetaPredictsCases, caseLink.EffectiveSampleSize, caseLink.NumParticles)
 	}
+	if calib != nil {
+		fmt.Printf("  Reachable-cluster calibration (%d): %.0f susceptibles "+
+			"CI[%.0f,%.0f]  importScale=%.1f (ESS=%.0f)\n",
+			calib.ReportYear, calib.ReachableCluster, calib.ReachableClusterCI[0],
+			calib.ReachableClusterCI[1], calib.ImportScale, calib.EffectiveSampleSize)
+	}
+	if joint != nil {
+		fmt.Printf("  Joint co-occurrence (%d scenarios): UTLAs outbreaking mean=%.1f "+
+			"p90=%.0f  national tail p90/p50=%.1fx p99/p50=%.1fx (relative, uncalibrated)\n",
+			joint.NScenarios, joint.ExpectedUTLAsOutbreak, joint.P90UTLAsOutbreak,
+			joint.NationalTailRatioP90, joint.NationalTailRatioP99)
+	}
 	if imp != nil {
 		fmt.Printf("  National importation pressure (%d European data): %.1fx baseline "+
 			"[%.1f, %.1f] (coarse, wide-band)\n",
@@ -219,6 +288,154 @@ func main() {
 		}
 		fmt.Println()
 	}
+}
+
+// calibrateCluster fits the reachable-cluster size to the latest report year's
+// observed censored UTLA totals. Returns nil (with a warning) if inputs are
+// unavailable, so the forecast falls back to the default.
+func calibrateCluster(
+	graph *measles.AdjacencyGraph, surf *measles.SusceptibilitySurface,
+	receptivity []float64, datadir string,
+) *calibrationBlock {
+	if receptivity == nil {
+		return nil
+	}
+	cases, err := measles.LoadUTLACases(filepath.Join(datadir, "measles_cases_utla.csv"))
+	if err != nil {
+		fmt.Printf("  (skip calibration: %v)\n", err)
+		return nil
+	}
+	// Calibrate on the latest COMPLETE calendar year (the current year is partial,
+	// so its outbreaks are half-developed and would bias the cluster size low).
+	currentYear := time.Now().Year()
+	year, maxYear := 0, 0
+	for _, c := range cases {
+		if c.ReportYear > maxYear {
+			maxYear = c.ReportYear
+		}
+		if c.ReportYear < currentYear && c.ReportYear > year {
+			year = c.ReportYear
+		}
+	}
+	if year == 0 {
+		year = maxYear
+	}
+	obs := measles.BuildCensoredCaseObservations(graph, cases, year)
+	post, err := measles.CalibrateReachableCluster(
+		surf.Smoothed, receptivity, obs.Counts, measles.DefaultSuppressionThreshold,
+		15.0 /*r0*/, 0.5 /*dispersion*/,
+		inference.UniformPrior{Lo: 1, Hi: 300},
+		inference.UniformPrior{Lo: 20, Hi: 3000}, 20000, 1)
+	if err != nil {
+		fmt.Printf("  (skip calibration: %v)\n", err)
+		return nil
+	}
+	return &calibrationBlock{
+		ReachableCluster:   round1(post.ReachableCluster),
+		ReachableClusterCI: []float64{round1(post.ReachableClusterCI95[0]), round1(post.ReachableClusterCI95[1])},
+		ImportScale:        round2(post.ImportScale),
+		R0Used:             post.R0Used,
+		EffectiveSampleSize: round1(post.EffectiveSampleSize),
+		ReportYear:         year,
+	}
+}
+
+// loadPopulationVector loads the per-UTLA population aligned to the graph, or nil
+// (with a warning) if unavailable — used for susceptible-depletion pools.
+func loadPopulationVector(graph *measles.AdjacencyGraph, datadir string) []float64 {
+	popMap, err := measles.LoadPopulation(filepath.Join(datadir, "population_utla.csv"))
+	if err != nil {
+		fmt.Printf("  (population unavailable, using fallback: %v)\n", err)
+		return nil
+	}
+	pop, err := measles.PopulationVector(graph, popMap)
+	if err != nil {
+		fmt.Printf("  (population unavailable, using fallback: %v)\n", err)
+		return nil
+	}
+	return pop
+}
+
+// jointSeedBase is the order-of-magnitude expected number of nationally-seeded
+// measles chains per season at baseline European activity. Coarse; scaled by the
+// importation index. Documented as an assumption, not a fitted value.
+const jointSeedBase = 30.0
+
+// jointCoOccurrence runs the shared-latent joint simulation on the real surface
+// and receptivity, using the importation index band as the national seed band,
+// and summarises the national-total tail and co-occurring-outbreak count.
+func jointCoOccurrence(
+	surf *measles.SusceptibilitySurface, receptivity, population []float64,
+	imp *importationBlock, reachableCluster float64, seed uint64,
+) *jointBlock {
+	if imp == nil || receptivity == nil || population == nil {
+		return nil
+	}
+	// Per-UTLA susceptible pool = min(s_i * N_i, reachable cluster), matching the
+	// single-UTLA transmission model's calibrated reachable-community bound.
+	pool := make([]float64, len(surf.Smoothed))
+	for i := range pool {
+		p := surf.Smoothed[i] * population[i]
+		if p > reachableCluster {
+			p = reachableCluster
+		}
+		pool[i] = p
+	}
+	const scenarios = 1000
+	p := measles.JointParams{
+		R0: 15, Dispersion: 0.5,
+		SeedLow:  jointSeedBase * imp.RelativeLow,
+		SeedHigh: jointSeedBase * imp.RelativeHigh,
+		MaxGenerations: 30,
+	}
+	sc := measles.RunJointEnsemble(surf.Smoothed, receptivity, pool, p, scenarios, seed)
+
+	totals := make([]float64, len(sc))
+	outbreakCounts := make([]float64, len(sc))
+	for k, s := range sc {
+		for _, c := range s.Cumulative {
+			totals[k] += c
+			if c >= 10 {
+				outbreakCounts[k]++
+			}
+		}
+	}
+	sort.Float64s(totals)
+	sort.Float64s(outbreakCounts)
+	mean := 0.0
+	for _, v := range outbreakCounts {
+		mean += v
+	}
+	mean /= float64(len(outbreakCounts))
+
+	p50 := quantile(totals, 0.50)
+	tailP90, tailP99 := 0.0, 0.0
+	if p50 > 0 {
+		tailP90 = quantile(totals, 0.90) / p50
+		tailP99 = quantile(totals, 0.99) / p50
+	}
+
+	return &jointBlock{
+		NScenarios:            scenarios,
+		SeedBand:              []float64{round1(p.SeedLow), round1(p.SeedHigh)},
+		ExpectedUTLAsOutbreak: round2(mean),
+		P90UTLAsOutbreak:      quantile(outbreakCounts, 0.90),
+		NationalTailRatioP90:  round2(tailP90),
+		NationalTailRatioP99:  round2(tailP99),
+		Note: "Shared national importation latent -> correlated per-UTLA outbreaks. " +
+			"Meaningful outputs are the co-occurrence BREADTH (UTLAs lighting up " +
+			"together) and RELATIVE tail fatness. Absolute case counts are NOT " +
+			"reported: the pure branching process has no susceptible depletion, so " +
+			"it is uncalibrated in magnitude (see PLAN.md).",
+	}
+}
+
+func quantile(sorted []float64, q float64) float64 {
+	if len(sorted) == 0 {
+		return 0
+	}
+	i := int(q * float64(len(sorted)-1))
+	return sorted[i]
 }
 
 // importationPressure builds the coarse national index for forecastYear and the

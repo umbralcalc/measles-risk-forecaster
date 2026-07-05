@@ -44,12 +44,12 @@ func TestBranchingIterationRunsUnderStochadex(t *testing.T) {
 }
 
 // runBranchingOnce runs the Iteration via the coordinator at a given
-// susceptibility and seed, returning the final cumulative cluster size.
-func runBranchingOnce(t *testing.T, susceptibility float64, seed uint64, cap float64) float64 {
+// susceptibility and seed, returning the final cumulative outbreak size.
+func runBranchingOnce(t *testing.T, susceptibility float64, seed uint64, pool float64) float64 {
 	t.Helper()
 	settings := simulator.LoadSettingsFromYaml("./transmission_settings.yaml")
 	settings.Iterations[0].Params.Map["susceptibility"] = []float64{susceptibility}
-	settings.Iterations[0].Params.Map["outbreak_cap"] = []float64{cap}
+	settings.Iterations[0].Params.Map["susceptible_pool"] = []float64{pool}
 	settings.Iterations[0].Seed = seed
 
 	store := simulator.NewStateTimeStorage()
@@ -76,21 +76,23 @@ func runBranchingOnce(t *testing.T, susceptibility float64, seed uint64, cap flo
 
 // TestBranchingIterationRegime confirms the engine-native model reproduces the
 // regime distinction the kernel tests established: supercritical susceptibility
-// (R_local >> 1) drives outbreaks to the cap a substantial fraction of the time,
-// while subcritical susceptibility (below the herd-immunity threshold) does not.
+// (R_local >> 1) drives large self-limiting outbreaks a substantial fraction of
+// the time, while subcritical susceptibility does not. With susceptible
+// depletion, "large" means the outbreak grows well beyond its seed.
 func TestBranchingIterationRegime(t *testing.T) {
-	const cap = 2000.0
+	const pool = 20000.0    // susceptible pool s*N
+	const largeThreshold = 100.0
 	const reps = 200
 
 	largeHi := 0
 	for seed := uint64(0); seed < reps; seed++ {
-		if runBranchingOnce(t, 0.30, seed, cap) >= cap {
+		if runBranchingOnce(t, 0.30, seed, pool) >= largeThreshold {
 			largeHi++
 		}
 	}
 	largeLo := 0
 	for seed := uint64(0); seed < reps; seed++ {
-		if runBranchingOnce(t, 0.04, seed, cap) >= cap {
+		if runBranchingOnce(t, 0.04, seed, pool) >= largeThreshold {
 			largeLo++
 		}
 	}

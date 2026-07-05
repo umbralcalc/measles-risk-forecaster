@@ -27,12 +27,20 @@ func TestEndToEndRiskDiscrimination(t *testing.T) {
 	tp.NumSims = 2000 // lighter for the test
 	rng := rand.New(rand.NewPCG(1, 1))
 
+	popMap, err := LoadPopulation(populationCSV)
+	if err != nil {
+		t.Fatalf("LoadPopulation: %v", err)
+	}
+	pop, err := PopulationVector(g, popMap)
+	if err != nil {
+		t.Fatalf("PopulationVector: %v", err)
+	}
 	riskAt := func(name string) UTLARisk {
 		i := nodeByName(g, name)
 		if i < 0 {
 			t.Fatalf("%s not in graph", name)
 		}
-		return ForecastUTLARisk(surf.Smoothed[i], tp, rng)
+		return ForecastUTLARisk(surf.Smoothed[i], pop[i], tp, rng)
 	}
 
 	hackney := riskAt("Hackney")       // 2025 hotspot, low coverage

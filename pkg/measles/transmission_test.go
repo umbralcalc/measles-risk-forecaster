@@ -40,7 +40,8 @@ func TestSubcriticalMeanClusterSize(t *testing.T) {
 
 	total := 0
 	for i := 0; i < n; i++ {
-		total += simulateCluster(rLocal, k, 100000, rng)
+		// Huge susceptible pool -> depletion negligible -> pure-branching limit.
+		total += simulateCluster(rLocal, k, 1e9, 1_000_000_000, rng)
 	}
 	got := float64(total) / float64(n)
 	want := expectedTotalProgeny(rLocal) // = 1/(1-0.6) = 2.5
@@ -50,28 +51,34 @@ func TestSubcriticalMeanClusterSize(t *testing.T) {
 	}
 }
 
-// TestSupercriticalProducesLargeOutbreaks checks the tail: a supercritical
-// process (R_local > 1) reaches the outbreak cap a substantial fraction of the
-// time, while a subcritical one essentially never does.
+// TestSupercriticalProducesLargeOutbreaks checks the tail with susceptible
+// depletion: a supercritical UTLA produces large self-limiting outbreaks a
+// substantial fraction of the time, while a subcritical one essentially never
+// does. Depletion bounds the final size by the susceptible pool (s*N).
 func TestSupercriticalProducesLargeOutbreaks(t *testing.T) {
-	p := TransmissionParams{R0Min: 12, R0Max: 18, Dispersion: 0.5,
-		NumSims: 4000, OutbreakCap: 2000}
+	p := TransmissionParams{R0Min: 12, R0Max: 18, Dispersion: 0.5, NumSims: 4000,
+		LargeOutbreakThreshold: 100, EffectivePoolFraction: 1.0, MaxOutbreakSize: 5_000_000}
 	rng := rand.New(rand.NewPCG(1, 1))
+	const population = 300000.0
 
-	// High susceptibility -> R_local well above 1 -> heavy outbreak tail.
-	hi := ForecastUTLARisk(0.30, p, rng)
+	// High susceptibility -> R_local well above 1 -> large outbreaks, bounded by
+	// the ~90k susceptible pool.
+	hi := ForecastUTLARisk(0.30, population, p, rng)
 	if hi.ProbLargeOutbreak < 0.3 {
 		t.Errorf("high-susceptibility P(large outbreak) = %.3f, expected substantial",
 			hi.ProbLargeOutbreak)
 	}
-	if hi.ClusterP99 < p.OutbreakCap {
-		t.Errorf("high-susceptibility p99 cluster = %d, expected to hit cap %d",
-			hi.ClusterP99, p.OutbreakCap)
+	if hi.ClusterP99 < 1000 {
+		t.Errorf("high-susceptibility p99 = %d, expected a large self-limiting outbreak",
+			hi.ClusterP99)
+	}
+	if hi.ClusterP99 > int(0.30*population) {
+		t.Errorf("high-susceptibility p99 = %d exceeds the susceptible pool", hi.ClusterP99)
 	}
 
 	// Below herd-immunity threshold -> R_local < 1 -> tiny clusters only.
-	lo := ForecastUTLARisk(0.04, p, rng)
-	if lo.ProbLargeOutbreak > 0.01 {
+	lo := ForecastUTLARisk(0.04, population, p, rng)
+	if lo.ProbLargeOutbreak > 0.02 {
 		t.Errorf("low-susceptibility P(large outbreak) = %.3f, expected ~0",
 			lo.ProbLargeOutbreak)
 	}

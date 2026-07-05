@@ -294,6 +294,45 @@ being wired into the stochadex engine across three seams:
    stochadex partition coordinator and test harness; shares `nextGeneration()`
    with the standalone kernel so the two cannot drift. This is the form that
    compiles to WASM for the dashboard's client-side per-UTLA ensembles.
+
+   **Single-partition is correct for the per-UTLA marginals.** The *joint*
+   co-occurrence question needed multi-partition — built as a genuine 2-partition
+   stochadex simulation (`pkg/measles/joint_simulation.go`): a shared
+   `NationalImportationIteration` (partition 0) draws a national seed total from
+   the importation-index band and feeds a `JointOutbreakIteration` (partition 1,
+   all UTLAs in one state vector) via `params_from_upstream`. The shared latent is
+   what correlates UTLAs — validated: mean outbreak correlation **0.37 vs 0.00**
+   for the independent baseline, and **6.7× the national-total variance**. Committed
+   in the map as `joint_cooccurrence`: co-occurrence *breadth* (≈39 UTLAs mean, 61
+   p90) and *relative* tail. Only breadth and correlation structure are honest
+   outputs.
+
+   ✅ **Susceptible depletion (2026-07-05).** The transmission model is now a
+   stochastic SIR, not a pure branching process: R_eff = R_local,0 · S/S_0 declines
+   as the local susceptible pool burns down (`simulateCluster` in transmission.go;
+   the single-UTLA and joint Iterations deplete identically). This replaces the
+   arbitrary cap with a mechanistic final-size distribution. **Honest finding:**
+   depletion alone does NOT make absolute sizes realistic — homogeneous mixing
+   across a UTLA's full susceptible pool (s·N) gives a takeoff that infects ~all of
+   it (Hackney → ~67k vs observed 133). So the pool is bounded by a
+   `ReachableClusterSize` (a school/neighbourhood-scale well-mixed community).
+
+   ✅ **Calibrated (2026-07-05).** `pkg/measles/calibration.go` fits
+   `ReachableClusterSize` (and an importation scale) to the observed censored UTLA
+   totals via SBI. The observed total is a compound of importations × depleting
+   chains, so `mu_i = importScale · receptivity_i · meanChainSize(R_local,i, RC)`;
+   `meanChainSize` (precomputed grid) saturates near RC for supercritical UTLAs but
+   stays small for subcritical ones, so the high-vs-low-susceptibility *contrast*
+   identifies RC. Validated by synthetic recovery (true 400 → CI [223,556]).
+   **Real 2025 fit: RC ≈ 400–510 susceptibles, CI ~[210, 1120]** (wide — a
+   structural parameter weakly pinned by one year's cross-section). The forecast
+   now calibrates on the latest *complete* year and uses the fitted RC, so absolute
+   outbreak sizes are **community-scaled and data-driven** (Hackney p50 ≈ 500, vs
+   133 observed — right order) rather than 67k or an arbitrary guess. A taken-off
+   outbreak fills the reachable community, so conditional sizes saturate near RC;
+   **P(R_local>1)** and **P(large outbreak)** remain the robust discriminators.
+   Committed as `cluster_calibration`. Future: multi-year / spatial-heterogeneity
+   refinement to tighten the wide CI.
 2. ✅ **Done (2026-06-29).** Fitting via stochadex SBI. `pkg/measles/caselink.go`
    fits the susceptibility→cases observation model
    `log μ_i = α + log(pop_i/popBar) + β·z_i` to the **real censored UTLA counts**

@@ -8,7 +8,9 @@ iterations:
     r0: [15.0]
     susceptibility: [0.2]
     dispersion: [0.5]
-    outbreak_cap: [5000.0]
+    # Absolute reachable susceptibles S_0 = s * population * pool_fraction.
+    # e.g. s=0.2, N=250000, fraction=1.0 -> 50000.
+    susceptible_pool: [50000.0]
   init_state_values: [1.0, 1.0]
   seed: 1
   state_width: 2

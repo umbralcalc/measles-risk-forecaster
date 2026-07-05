@@ -19,11 +19,13 @@ import (
 // generation.
 //
 //	State:  [infectious, cumulative]  (current generation size, total cases so far)
-//	Params: r0            basic reproduction number
-//	        susceptibility effective susceptible fraction s (R_local = r0 * s)
-//	        dispersion    negative-binomial dispersion k (superspreading)
-//	        outbreak_cap  cumulative size at which the outbreak is called "large"
-//	                      and the process is frozen (absorbing)
+//	Params: r0               basic reproduction number
+//	        susceptibility   effective susceptible fraction s (R_local,0 = r0 * s)
+//	        dispersion       negative-binomial dispersion k (superspreading)
+//	        susceptible_pool absolute reachable susceptibles S_0 (= s * N * fraction);
+//	                         R_eff = R_local,0 * remaining/S_0, so the outbreak
+//	                         self-limits by susceptible depletion (absorbing when
+//	                         susceptibles run out)
 //
 // Seed the simulation with init_state_values [1, 1] (one importation).
 type BranchingProcessIteration struct {
@@ -51,17 +53,20 @@ func (b *BranchingProcessIteration) Iterate(
 	r0 := params.Map["r0"][0]
 	s := params.Map["susceptibility"][0]
 	dispersion := params.Map["dispersion"][0]
-	cap := params.Map["outbreak_cap"][0]
+	pool := params.Map["susceptible_pool"][0]
 
-	// Absorbing states: extinct (no infectious left) or already a large outbreak.
-	if infectious <= 0 || cumulative >= cap {
+	// Absorbing states: extinct (no infectious left) or susceptibles exhausted.
+	remaining := pool - cumulative
+	if infectious <= 0 || remaining <= 0 {
 		return []float64{0, cumulative}
 	}
 
-	next := nextGeneration(infectious, r0*s, dispersion, b.rng)
-	cumulative += float64(next)
-	if cumulative > cap {
-		cumulative = cap
+	// Effective reproduction number declines with susceptible depletion.
+	rEff := r0 * s * (remaining / pool)
+	next := nextGeneration(infectious, rEff, dispersion, b.rng)
+	if float64(next) > remaining {
+		next = int(remaining)
 	}
+	cumulative += float64(next)
 	return []float64{float64(next), cumulative}
 }
