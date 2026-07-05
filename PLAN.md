@@ -345,8 +345,20 @@ being wired into the stochadex engine across three seams:
    ONS via Nomis). *Note: programmatic SBI, not the `cfg/*.yaml` codegen path,
    which is heavier and built for time series — this cross-sectional fit is cleaner
    via `ComputePosterior` directly.*
-3. ⬜ `cmd/forecast` → stochadex CLI + YAML config (optional), then the
-   dexetera/WASM dashboard (`app/`).
+3. 🔨 **Dashboard started (2026-07-05).** `app/measlesdash/` — a self-contained
+   static-baked widget (dexetera pattern, house style like AMR's `app/`):
+   `build_data.py` bakes the committed risk map + ONS BUC geometry into a compact
+   `data/dashboard.json`; `build_widget.py` inlines it into `widget.html` → a
+   dependency-free `index.html`. **Hero choropleth done:** England UTLAs coloured by
+   a metric toggle (susceptibility / P(Rₗ>1) / P(large outbreak) / importation
+   pressure), hand-rolled SVG (no CDN deps), hover + click-to-detail, sequential
+   single-hue risk ramp with the herd-immunity threshold marked, both light/dark
+   themes, plus a stat strip surfacing the skill ceiling, importation index,
+   case-link β, calibrated cluster size, and joint co-occurrence.
+   **Next:** the interactive WASM branching-ensemble (compile
+   `BranchingProcessIteration` per seam 1 to WASM for client-side per-UTLA outbreak
+   simulation on click) + the susceptibility explorer; optionally `cmd/forecast` →
+   stochadex CLI/YAML.
 
 ## Skill ceiling — the load-bearing honest figure
 
