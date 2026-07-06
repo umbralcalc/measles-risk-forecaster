@@ -2,7 +2,7 @@
 // conditional autoregressive (ICAR / Besag) prior over the UTLA adjacency graph,
 // and the Gaussian smoother that pools strength across neighbours.
 //
-// Why it matters (PLAN.md sub-model A): UTLA coverage and case data are sparse
+// Why it matters (README.md sub-model A): UTLA coverage and case data are sparse
 // and — for cases — heavily suppressed (see censored_poisson.go). A spatial prior
 // that borrows strength from neighbouring UTLAs is what turns that sparse,
 // censored signal into a usable susceptibility surface. A fully-suppressed UTLA

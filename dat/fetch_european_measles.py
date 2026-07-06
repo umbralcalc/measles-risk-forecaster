@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Ingest annual WHO European Region measles incidence — the importation-pressure
-covariate (coarse importation index; see PLAN.md importation-feasibility verdict).
+covariate (coarse importation index; see README.md importation-feasibility verdict).
 
 England's measles importations track upstream European activity (the 2024 surge
 followed Europe's). This is the *coarse* covariate the feasibility study endorsed:

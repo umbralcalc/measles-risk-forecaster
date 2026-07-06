@@ -1,7 +1,7 @@
 // This file computes the skill-ceiling decomposition (cmd/skill-ceiling): how
 // much of where-and-when measles actually happens is predictable from the
 // susceptibility surface, versus irreducible. This is the project's load-bearing
-// honest figure (PLAN.md "the predictable-vs-irreducible decomposition").
+// honest figure (README.md "the predictable-vs-irreducible decomposition").
 //
 // It has two axes, kept separate because they answer different questions and the
 // feasibility study (see repo notes) showed one is easily mistaken for the other:

@@ -51,7 +51,7 @@
     "relative_central": 4.93,
     "relative_low": 2.22,
     "relative_high": 10.95,
-    "note": "Coarse annual importation-pressure proxy: WHO European Region measles activity relative to baseline. Wide band reflects weak Europe-\u003eUK identification. Not a weekly forecast (see PLAN.md)."
+    "note": "Coarse annual importation-pressure proxy: WHO European Region measles activity relative to baseline. Wide band reflects weak Europe-\u003eUK identification. Not a weekly forecast (see README.md)."
   },
   "joint_cooccurrence": {
     "n_scenarios": 1000,
@@ -63,7 +63,7 @@
     "p90_utlas_with_outbreak": 60,
     "national_tail_ratio_p90": 1.66,
     "national_tail_ratio_p99": 1.99,
-    "note": "Shared national importation latent -\u003e correlated per-UTLA outbreaks. Meaningful outputs are the co-occurrence BREADTH (UTLAs lighting up together) and RELATIVE tail fatness. Absolute case counts are NOT reported: the pure branching process has no susceptible depletion, so it is uncalibrated in magnitude (see PLAN.md)."
+    "note": "Shared national importation latent -\u003e correlated per-UTLA outbreaks. Meaningful outputs are the co-occurrence BREADTH (UTLAs lighting up together) and RELATIVE tail fatness. Absolute case counts are NOT reported: the pure branching process has no susceptible depletion, so it is uncalibrated in magnitude (see README.md)."
   },
   "utlas": [
     {

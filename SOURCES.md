@@ -190,4 +190,4 @@ and disclosure-controlled, so no personal data sits under the exception.
 > affiliated with or endorsed by UKHSA or ONS, and is not an official source of
 > measles risk assessment — for that, consult UKHSA directly.
 
-(Adds the OS Crown-copyright-and-database-right line missing from the PLAN.md draft.)
+(Adds the OS Crown-copyright-and-database-right line missing from the README.md draft.)

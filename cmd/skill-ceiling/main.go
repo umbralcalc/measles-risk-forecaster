@@ -1,5 +1,5 @@
 // Command skill-ceiling computes and commits the predictable-vs-irreducible
-// decomposition (PLAN.md's load-bearing honest figure): how much of where and
+// decomposition (README.md's load-bearing honest figure): how much of where and
 // when measles happens is predictable from the susceptibility surface, versus
 // irreducible. Writes data/skill_ceiling.json.
 //

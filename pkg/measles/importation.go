@@ -1,4 +1,4 @@
-// This file builds the coarse national importation-pressure index (PLAN.md
+// This file builds the coarse national importation-pressure index (README.md
 // importation-feasibility verdict, 2026-07-03). England's measles importations
 // track upstream European activity, so the index is European measles incidence
 // relative to baseline — deliberately annual and wide-uncertainty, because the

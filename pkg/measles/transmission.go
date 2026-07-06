@@ -1,7 +1,7 @@
 // This file is sub-model B (gating check #5): local transmission. It turns the
 // susceptibility surface (sub-model A) into the headline risk quantities by
 // simulating the local epidemic process many times and reading risk off the
-// ensemble (PLAN.md "What we forecast"):
+// ensemble (README.md "What we forecast"):
 //
 //   - R_local,i = R0 * s_i, with R0 an uncertain measles basic reproduction
 //     number (~12-18). P(R_local > 1) = P(self-sustaining transmission given an

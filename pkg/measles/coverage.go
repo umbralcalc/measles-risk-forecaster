@@ -172,7 +172,74 @@ func BuildSusceptibilitySurface(
 	e1, e2 float64,
 	tau, obsPrecision float64,
 ) (*SusceptibilitySurface, error) {
-	cov := latestDoseCoverage(records, stratum)
+	return buildSurfaceFromCoverage(g, latestDoseCoverage(records, stratum), e1, e2, tau, obsPrecision)
+}
+
+// cohortDoseCoverage averages MMR1/MMR2 coverage over the year window
+// [minYear, maxYear] per geography code. Averaging the milestone coverage across
+// years is a cohort accumulation: each year's 5y coverage is a distinct birth
+// cohort, so the window mean is the school-age population's susceptibility, which
+// a single latest-year milestone misses when coverage has been trending.
+func cohortDoseCoverage(records []CoverageRecord, stratum string, minYear, maxYear int) map[string]struct{ c1, c2 float64 } {
+	type acc struct {
+		sum1, sum2 float64
+		n1, n2     int
+	}
+	m := map[string]*acc{}
+	for _, r := range records {
+		if r.Stratum != stratum || r.Year < minYear || r.Year > maxYear {
+			continue
+		}
+		code := r.Code
+		if mapped, ok := coverCodeCrosswalk[code]; ok {
+			code = mapped
+		}
+		if m[code] == nil {
+			m[code] = &acc{}
+		}
+		switch r.Dose {
+		case "MMR1":
+			m[code].sum1 += r.CoveragePct
+			m[code].n1++
+		case "MMR2":
+			m[code].sum2 += r.CoveragePct
+			m[code].n2++
+		}
+	}
+	out := map[string]struct{ c1, c2 float64 }{}
+	for code, a := range m {
+		var c1, c2 float64
+		if a.n1 > 0 {
+			c1 = a.sum1 / float64(a.n1) / 100
+		}
+		if a.n2 > 0 {
+			c2 = a.sum2 / float64(a.n2) / 100
+		}
+		out[code] = struct{ c1, c2 float64 }{c1, c2}
+	}
+	return out
+}
+
+// BuildCohortSusceptibilitySurface builds the susceptibility surface from
+// coverage accumulated over the school-age cohort window [minYear, maxYear],
+// rather than the single latest milestone (sub-model A proper).
+func BuildCohortSusceptibilitySurface(
+	g *AdjacencyGraph,
+	records []CoverageRecord,
+	stratum string,
+	e1, e2 float64,
+	tau, obsPrecision float64,
+	minYear, maxYear int,
+) (*SusceptibilitySurface, error) {
+	return buildSurfaceFromCoverage(g, cohortDoseCoverage(records, stratum, minYear, maxYear), e1, e2, tau, obsPrecision)
+}
+
+func buildSurfaceFromCoverage(
+	g *AdjacencyGraph,
+	cov map[string]struct{ c1, c2 float64 },
+	e1, e2 float64,
+	tau, obsPrecision float64,
+) (*SusceptibilitySurface, error) {
 	n := g.NumNodes()
 	raw := make([]float64, n)
 	obsPrec := make([]float64, n)

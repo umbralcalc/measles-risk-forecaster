@@ -1,0 +1,44 @@
+{
+  "per_year": [
+    {
+      "auc": {
+        "cohort-susceptibility": 0.838,
+        "coverage-alone": 0.824,
+        "deprivation": 0.501,
+        "expected-cases": 0.726,
+        "model-surface": 0.834,
+        "population": 0.674
+      },
+      "n_clusters": 64,
+      "year": 2024
+    },
+    {
+      "auc": {
+        "cohort-susceptibility": 0.811,
+        "coverage-alone": 0.838,
+        "deprivation": 0.631,
+        "expected-cases": 0.685,
+        "model-surface": 0.844,
+        "population": 0.655,
+        "recent-cases": 0.758
+      },
+      "n_clusters": 26,
+      "year": 2025
+    }
+  ],
+  "pooled_auc": {
+    "cohort-susceptibility": 0.794,
+    "coverage-alone": 0.791,
+    "deprivation": 0.545,
+    "expected-cases": 0.693,
+    "model-surface": 0.799,
+    "population": 0.655
+  },
+  "scoring": "AUC / Mann-Whitney rank skill (0.5 = no skill); no-leakage, coverage as-of year t-1",
+  "target": "UTLA had \u003e=10 confirmed measles cases (a cluster) in the year",
+  "target_years": [
+    2024,
+    2025
+  ],
+  "verdict": "Pooled cluster AUC: coverage-alone 0.791; model surface 0.799 (spatial pooling, +0.008, within noise); cohort accumulation 0.794 (helps 2024, hurts 2025 — no robust gain); deprivation 0.545 (near chance — measles under-vaccination is community-specific, not deprivation-driven). Honest conclusion: with the available open data, COVERAGE IS A NEAR-SUFFICIENT SPATIAL STATISTIC — no tested addition robustly beats it. Only 2 target years; the teen/young-adult susceptible cohorts (pre-2014 UTLA coverage) are the missing information we cannot obtain at this resolution."
+}

@@ -2,7 +2,7 @@
 // measles-risk-forecaster. This file holds the censored count likelihood that
 // makes the UTLA case data usable.
 //
-// Why this exists (gating check #3, see PLAN.md "Validation & honesty rules"):
+// Why this exists (gating check #3, see README.md "Validation & honesty rules"):
 // the GOV.UK measles epidemiology report suppresses any UTLA with fewer than 10
 // confirmed cases — and, crucially, suppression is *row omission*: a suppressed
 // UTLA simply does not appear in the table (it is NOT shown as 0, blank, or

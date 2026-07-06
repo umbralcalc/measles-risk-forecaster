@@ -426,7 +426,7 @@ func jointCoOccurrence(
 			"Meaningful outputs are the co-occurrence BREADTH (UTLAs lighting up " +
 			"together) and RELATIVE tail fatness. Absolute case counts are NOT " +
 			"reported: the pure branching process has no susceptible depletion, so " +
-			"it is uncalibrated in magnitude (see PLAN.md).",
+			"it is uncalibrated in magnitude (see README.md).",
 	}
 }
 
@@ -473,7 +473,7 @@ func importationPressure(
 		RelativeLow:     round2(p.RelativeLow), RelativeHigh: round2(p.RelativeHigh),
 		Note: "Coarse annual importation-pressure proxy: WHO European Region measles " +
 			"activity relative to baseline. Wide band reflects weak Europe->UK " +
-			"identification. Not a weekly forecast (see PLAN.md).",
+			"identification. Not a weekly forecast (see README.md).",
 	}
 	return block, measles.ReceptivityWeights(pop)
 }

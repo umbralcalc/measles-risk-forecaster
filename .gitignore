@@ -5,10 +5,6 @@ data/raw/
 # The small derived adjacency artifacts (dat/utla_nodes.csv,
 # dat/utla_adjacency.csv) ARE committed: the Go spatial tests depend on them.
 
-# Generated dashboard page (rebuild: python3 app/measlesdash/build_widget.py).
-# Source is widget.html + build scripts; data bundle (dashboard.json) is committed.
-app/measlesdash/index.html
-
 # Go
 *.test
 *.out

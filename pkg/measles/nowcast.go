@@ -2,7 +2,7 @@
 // onset weeks are right-truncated — not all their cases have been reported yet —
 // so the raw tail of the Region x week series understates current activity. This
 // de-biases it before it informs the risk surface (a supporting sub-model, not
-// the headline; PLAN.md sub-model C).
+// the headline; README.md sub-model C).
 //
 // Method (a generative right-truncation correction, the NobBS / renewal
 // nowcasting lineage the plan cites rather than invents): a week whose onset was

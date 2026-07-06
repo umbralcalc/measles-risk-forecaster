@@ -1,9 +1,8 @@
-// This file is seam 1 of the stochadex integration: sub-model B's branching
-// process expressed as a stochadex simulator.Iteration. Each Iterate advances
-// the epidemic one generation, so a single simulation run is one realisation of
-// a UTLA outbreak and an ensemble of seeds is the cluster-size distribution. This
-// is the form that compiles to WASM for the dashboard, letting a reader run
-// per-UTLA outbreak ensembles client-side (PLAN.md "Dashboard & distribution").
+// This file expresses sub-model B's branching process as a stochadex
+// simulator.Iteration. Each Iterate advances the epidemic one generation, so a
+// single simulation run is one realisation of a UTLA outbreak and an ensemble of
+// seeds is the cluster-size distribution — the engine-native form of the model,
+// and the per-UTLA building block the joint co-occurrence simulation composes.
 //
 // It shares nextGeneration() with the standalone kernel (transmission.go), so the
 // engine-native model and the unit-tested kernel are guaranteed identical.
