@@ -4,8 +4,8 @@ github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aN
 github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/scientificgo/special v0.0.2 h1:op6ET2lyLzzRcQ3ahCN1CSd4uz+zOfWqvNlLwWmsQhs=
 github.com/scientificgo/special v0.0.2/go.mod h1:BqiyV7QBWtBCHu7IdcVsPYweRvTcsjMoqUnR4gjcSZk=
-github.com/umbralcalc/stochadex v0.9.0 h1:YvCnw9DWWwBGL+Y7F402nILCcqeC6WbdA9MW4+b7jU0=
-github.com/umbralcalc/stochadex v0.9.0/go.mod h1:ziiqX1xwYlQlq/B1rHct0Kv/VA337NAbfFktXlk3sXs=
+github.com/umbralcalc/stochadex v0.11.0 h1:6TXmP2jj6+VSabFWv/CJm0PSbbwEcFk2v4aJB3AMITc=
+github.com/umbralcalc/stochadex v0.11.0/go.mod h1:ziiqX1xwYlQlq/B1rHct0Kv/VA337NAbfFktXlk3sXs=
 golang.org/x/exp v0.0.0-20230321023759-10a507213a29 h1:ooxPy7fPvB4kwsA2h+iBNHkAbp/4JxTSwCmvdjEYmug=
 golang.org/x/exp v0.0.0-20230321023759-10a507213a29/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=
 golang.org/x/tools v0.37.0 h1:DVSRzp7FwePZW356yEAChSdNcQo6Nsp+fex1SUW09lE=
